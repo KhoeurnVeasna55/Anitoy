@@ -1,0 +1,3 @@
+.tv-shadow-sm { box-shadow: var(--shadow-sm) !important; }
+.rounded-md { border-radius: var(--radius-md) !important; }
+.transition-page { transition: all 200ms ease-out; }

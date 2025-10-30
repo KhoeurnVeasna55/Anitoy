@@ -1,0 +1,42 @@
+<nav class="navbar navbar-expand-md tv-navbar">
+  <div class="container">
+    <!-- Brand -->
+    <a href="#" class="d-flex align-items-center text-decoration-none me-2">
+      <div class="brand-pill">T</div>
+      <span class="brand-text">ToyVerse</span>
+    </a>
+
+    <!-- Hamburger -->
+    <button class="navbar-toggler ms-auto" type="button"
+            data-bs-toggle="collapse" data-bs-target="#tvNav"
+            aria-controls="tvNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="tvNav">
+      <!-- Left: Categories -->
+      <div class="d-flex align-items-center mt-3 mt-md-0">
+        <button class="categories-btn">
+          Categories <i class="bi bi-chevron-down" style="font-size:.75rem;"></i>
+        </button>
+      </div>
+
+      <!-- Middle: Search -->
+      <div class="search-wrapper mt-3 mt-md-0 mx-md-3 flex-md-grow-1">
+        <input type="text" class="search-box" placeholder="Search collectibles...">
+        <i class="bi bi-search search-icon"></i>
+      </div>
+
+      <!-- Right: Cart + Auth -->
+      <div class="d-flex align-items-center gap-2 ms-md-auto mt-3 mt-md-0">
+        <button class="cart-btn">
+          <i class="bi bi-cart"></i>
+          <span class="cart-badge">3</span>
+        </button>
+        <button class="sign-in-btn">Sign In</button>
+        <button class="sign-up-btn">Sign Up</button>
+      </div>
+    </div>
+  </div>
+</nav>

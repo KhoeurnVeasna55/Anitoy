@@ -1,0 +1,519 @@
+/*:root {*/
+/*  --font-size: 16px;*/
+
+/*  !* Palette *!*/
+/*  --primary: #6C5CE7;*/
+/*  --primary-foreground: #FFFFFF;*/
+/*  --accent: #FFB703;*/
+/*  --accent-foreground: #0F172A;*/
+/*  --success: #22C55E;*/
+/*  --success-foreground: #FFFFFF;*/
+/*  --danger: #EF4444;*/
+/*  --danger-foreground: #FFFFFF;*/
+
+/*  !* Semantic *!*/
+/*  --ink: #0F172A;*/
+/*  --body: #334155;*/
+/*  --subtext: #64748B;*/
+/*  --line: #E2E8F0;*/
+/*  --surface: #F8FAFC;*/
+/*  --pure: #FFFFFF;*/
+
+/*  --background: #FFFFFF;*/
+/*  --foreground: #334155;*/
+/*  --card: #FFFFFF;*/
+/*  --card-foreground: #334155;*/
+/*  --secondary: #F8FAFC;*/
+/*  --secondary-foreground: #0F172A;*/
+/*  --muted: #F8FAFC;*/
+/*  --muted-foreground: #64748B;*/
+/*  --border: #E2E8F0;*/
+/*  --input: transparent;*/
+/*  --input-background: #FFFFFF;*/
+/*  --switch-background: #E2E8F0;*/
+/*  --ring: #6C5CE7;*/
+
+/*  !* Radius *!*/
+/*  --radius-xs: 8px;*/
+/*  --radius-sm: 12px;*/
+/*  --radius-md: 16px;*/
+/*  --radius-lg: 20px;*/
+/*  --radius-xl: 24px;*/
+/*  --radius: 16px;*/
+
+/*  !* Shadow *!*/
+/*  --shadow-sm: 0 1px 2px rgba(15, 23, 42, .06);*/
+/*  --shadow-md: 0 4px 12px rgba(15, 23, 42, .08);*/
+/*  --shadow-lg: 0 12px 24px rgba(15, 23, 42, .10);*/
+
+/*  !* Typography scale *!*/
+/*  --text-xs: .75rem;*/
+/*  --text-sm: .875rem;*/
+/*  --text-base: 1rem;*/
+/*  --text-lg: 1.125rem;*/
+/*  --text-xl: 1.25rem;*/
+/*  --text-2xl: 1.5rem;*/
+/*  --text-3xl: 1.875rem;*/
+/*  --text-4xl: 2.25rem;*/
+
+/*  --font-weight-normal: 400;*/
+/*  --font-weight-medium: 500;*/
+/*  --font-weight-semibold: 600;*/
+/*  --font-weight-bold: 700;*/
+
+/*  !* Fonts *!*/
+/*  --font-heading: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;*/
+/*  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;*/
+/*  --bs-body-font-family: var(--font-body);*/
+
+/*  !* Charts *!*/
+/*  --chart-1: #6C5CE7;*/
+/*  --chart-2: #FFB703;*/
+/*  --chart-3: #22C55E;*/
+/*  --chart-4: #EF4444;*/
+/*  --chart-5: #64748B;*/
+
+/*  !* Sidebar (future use) *!*/
+/*  --sidebar: #F8FAFC;*/
+/*  --sidebar-foreground: #334155;*/
+/*  --sidebar-primary: #6C5CE7;*/
+/*  --sidebar-primary-foreground: #FFFFFF;*/
+/*  --sidebar-accent: #FFFFFF;*/
+/*  --sidebar-accent-foreground: #0F172A;*/
+/*  --sidebar-border: #E2E8F0;*/
+/*  --sidebar-ring: #6C5CE7;*/
+
+/*  !* Map to Bootstrap *!*/
+/*  --bs-body-bg: var(--background);*/
+/*  --bs-body-color: var(--foreground);*/
+/*  --bs-border-color: var(--border);*/
+/*  --bs-primary: var(--primary);*/
+/*  --bs-success: var(--success);*/
+/*  --bs-danger: var(--danger);*/
+/*  --bs-secondary-bg: var(--secondary);*/
+/*  --bs-link-color: var(--primary);*/
+/*  --bs-link-hover-color: #5a4bd6;*/
+/*  --bs-body-line-height: 1.6;*/
+/*}*/
+
+/*!* Dark mode *!*/
+/*.dark {*/
+/*  --background: #0F172A;*/
+/*  --foreground: #F8FAFC;*/
+/*  --card: #1E293B;*/
+/*  --card-foreground: #F8FAFC;*/
+/*  --secondary: #1E293B;*/
+/*  --secondary-foreground: #F8FAFC;*/
+/*  --muted: #1E293B;*/
+/*  --muted-foreground: #94A3B8;*/
+/*  --accent: #FFB703;*/
+/*  --accent-foreground: #0F172A;*/
+/*  --border: #334155;*/
+/*  --input: #1E293B;*/
+/*  --ring: #6C5CE7;*/
+
+/*  --bs-body-bg: var(--background);*/
+/*  --bs-body-color: var(--foreground);*/
+/*  --bs-border-color: var(--border);*/
+/*}*/
+
+/*!* ---------- Base ---------- *!*/
+/*html, body,*/
+/*.btn, .form-control, .input-group-text, .form-select,*/
+/*.navbar, .navbar .nav-link, .dropdown-item, .badge, .alert, .table, .list-group,*/
+/*.card, .modal, .offcanvas, .breadcrumb, .pagination {*/
+/*  font-family: var(--font-body) !important;*/
+/*  font-weight: 400;*/
+/*}*/
+
+/*h1, h2, h3, h4, h5, h6,*/
+/*.navbar-brand, .display-1, .display-2, .display-3 {*/
+/*  font-family: var(--font-heading) !important;*/
+/*  font-weight: 600;*/
+/*}*/
+
+/*.navbar .nav-link { font-weight: 500; }*/
+
+/*h1 { font-size: var(--text-4xl); font-weight: var(--font-weight-bold); line-height: 1.2; }*/
+/*h2 { font-size: var(--text-3xl); font-weight: var(--font-weight-semibold); line-height: 1.3; }*/
+/*h3 { font-size: var(--text-2xl); font-weight: var(--font-weight-semibold); line-height: 1.35; }*/
+/*h4 { font-size: var(--text-xl); font-weight: var(--font-weight-semibold); line-height: 1.4; }*/
+/*p  { font-size: var(--text-base); color: var(--body); }*/
+
+/*!* ---------- Components ---------- *!*/
+/*!* Buttons *!*/
+/*.btn-primary { background: var(--primary); border-color: var(--primary); }*/
+/*.btn-primary:hover { background: #5a4bd6; border-color: #5a4bd6; }*/
+
+/*.btn-accent { background: var(--accent); color: var(--accent-foreground); border-color: var(--accent); }*/
+/*.btn-accent:hover { filter: brightness(0.95); }*/
+
+/*!* Cards *!*/
+/*.card {*/
+/*  border-color: var(--border);*/
+/*  background: var(--card);*/
+/*  color: var(--card-foreground);*/
+/*  border-radius: var(--radius-md);*/
+/*  box-shadow: var(--shadow-sm);*/
+/*}*/
+/*.card-hover:hover { box-shadow: var(--shadow-md); }*/
+
+/*!* Forms *!*/
+/*.form-control {*/
+/*  border-color: var(--border);*/
+/*  background: var(--input-background);*/
+/*  border-radius: var(--radius-sm);*/
+/*}*/
+/*.form-control:focus {*/
+/*  border-color: var(--ring);*/
+/*  box-shadow: 0 0 0 .25rem rgba(108, 92, 231, .25);*/
+/*}*/
+/*.input-group-lg .form-control {*/
+/*  font-size: var(--text-base);*/
+/*  padding-top: .6rem;*/
+/*  padding-bottom: .6rem;*/
+/*}*/
+
+/*!* Navbar *!*/
+/*.navbar .nav-link { color: var(--subtext); }*/
+/*.navbar .nav-link:hover { color: var(--ink); }*/
+
+/*.tv-navbar {*/
+/*  background: #fff;*/
+/*  box-shadow: var(--shadow-sm);*/
+/*}*/
+/*.tv-navbar .container { min-height: 85px; }*/
+/*@media (min-width: 992px) {*/
+/*  .tv-navbar .container { min-height: 90px; }*/
+/*}*/
+/*.tv-navbar .nav-link {*/
+/*  padding-top: .65rem;*/
+/*  padding-bottom: .65rem;*/
+/*}*/
+
+/*!* Brand pill (single source of truth) *!*/
+/*.brand-pill {*/
+/*  display: inline-grid;*/
+/*  place-items: center;*/
+/*  width: 40px;*/
+/*  height: 40px;*/
+/*  border-radius: 12px;*/
+/*  background: var(--primary);*/
+/*  color: #fff;*/
+/*  font-weight: 700;*/
+/*}*/
+
+/*!* Cart badge (single) *!*/
+/*.cart-badge {*/
+/*  position: absolute;*/
+/*  top: -6px;*/
+/*  right: -8px;*/
+/*  background: var(--primary);*/
+/*  color: #fff;*/
+/*  font-size: .65rem;*/
+/*  padding: .15rem .35rem;*/
+/*}*/
+
+/*!* Search area *!*/
+/*!* ========================================*/
+/*   ENHANCED SEARCH UI IMPROVEMENTS*/
+/*   ======================================== *!*/
+
+/*!* Search Container - Desktop *!*/
+/*.tv-search {*/
+/*  max-width: 700px;*/
+/*  width: 100%;*/
+/*  position: relative;*/
+/*}*/
+
+/*!* Enhanced Pill Wrapper with Modern Design *!*/
+/*.tv-pill {*/
+/*  border: 2px solid var(--border);*/
+/*  border-radius: 14px;*/
+/*  background: var(--pure);*/
+/*  box-shadow: 0 2px 8px rgba(15, 23, 42, .04);*/
+/*  overflow: hidden;*/
+/*  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);*/
+/*  position: relative;*/
+/*}*/
+
+/*!* Elevated hover state *!*/
+/*.tv-pill:hover {*/
+/*  border-color: rgba(108, 92, 231, 0.3);*/
+/*  box-shadow: 0 4px 16px rgba(15, 23, 42, .08);*/
+/*  transform: translateY(-1px);*/
+/*}*/
+
+/*!* Enhanced focus state with glowing effect *!*/
+/*.tv-pill:focus-within {*/
+/*  border-color: var(--primary);*/
+/*  box-shadow:*/
+/*    0 0 0 4px rgba(108, 92, 231, .12),*/
+/*    0 4px 20px rgba(108, 92, 231, .15);*/
+/*  transform: translateY(-1px);*/
+/*}*/
+
+/*!* Search Icon Enhancement *!*/
+/*.tv-pill .input-group-text {*/
+/*  border: 0 !important;*/
+/*  border-right: 1px solid var(--border) !important;*/
+/*  background: transparent !important;*/
+/*  border-radius: 0;*/
+/*  padding-left: 1.25rem;*/
+/*  padding-right: 0.75rem;*/
+/*  transition: all 200ms ease;*/
+/*}*/
+
+/*.tv-pill .input-group-text i {*/
+/*  font-size: 1.1rem;*/
+/*  color: var(--subtext);*/
+/*  transition: all 200ms ease;*/
+/*}*/
+
+/*!* Icon becomes primary color on focus *!*/
+/*.tv-pill:focus-within .input-group-text i {*/
+/*  color: var(--primary);*/
+/*  transform: scale(1.1);*/
+/*}*/
+
+/*!* Enhanced Search Input *!*/
+/*.tv-pill .form-control {*/
+/*  border: 0 !important;*/
+/*  background: transparent !important;*/
+/*  border-radius: 0;*/
+/*  font-size: 15px;*/
+/*  font-weight: 500;*/
+/*  color: var(--ink);*/
+/*  padding: 0.875rem 1.25rem 0.875rem 0;*/
+/*  transition: all 200ms ease;*/
+/*}*/
+
+/*.tv-pill .form-control::placeholder {*/
+/*  color: var(--subtext);*/
+/*  font-weight: 400;*/
+/*  transition: all 200ms ease;*/
+/*}*/
+
+/*.tv-pill .form-control:focus {*/
+/*  box-shadow: none;*/
+/*  outline: none;*/
+/*}*/
+
+/*.tv-pill .form-control:focus::placeholder {*/
+/*  color: rgba(100, 116, 139, 0.5);*/
+/*  transform: translateX(2px);*/
+/*}*/
+
+/*!* Large variant for desktop navbar *!*/
+/*.input-group-lg .tv-pill .form-control {*/
+/*  font-size: 15px;*/
+/*  padding-top: 1rem;*/
+/*  padding-bottom: 1rem;*/
+/*}*/
+
+/*!* Clear button (optional enhancement) *!*/
+/*.tv-search-clear {*/
+/*  position: absolute;*/
+/*  right: 12px;*/
+/*  top: 50%;*/
+/*  transform: translateY(-50%);*/
+/*  background: var(--surface);*/
+/*  border: none;*/
+/*  border-radius: 50%;*/
+/*  width: 24px;*/
+/*  height: 24px;*/
+/*  display: flex;*/
+/*  align-items: center;*/
+/*  justify-content: center;*/
+/*  cursor: pointer;*/
+/*  opacity: 0;*/
+/*  pointer-events: none;*/
+/*  transition: all 200ms ease;*/
+/*  z-index: 10;*/
+/*  color: var(--subtext);*/
+/*  font-size: 14px;*/
+/*}*/
+
+/*.tv-search-clear:hover {*/
+/*  background: var(--border);*/
+/*  color: var(--ink);*/
+/*}*/
+
+/*.tv-pill .form-control:not(:placeholder-shown) ~ .tv-search-clear {*/
+/*  opacity: 1;*/
+/*  pointer-events: auto;*/
+/*}*/
+
+/*!* Mobile Search Enhancement *!*/
+/*@media (max-width: 767.98px) {*/
+/*  .offcanvas-body .tv-pill {*/
+/*    border-radius: 12px;*/
+/*  }*/
+
+/*  .offcanvas-body .tv-pill .form-control {*/
+/*    padding: 0.875rem 1rem 0.875rem 0;*/
+/*    font-size: 16px; !* Prevents zoom on iOS *!*/
+/*  }*/
+
+/*  .offcanvas-body .tv-pill .input-group-text {*/
+/*    padding-left: 1rem;*/
+/*  }*/
+/*}*/
+
+/*!* Loading state (optional) *!*/
+/*.tv-pill.is-loading {*/
+/*  pointer-events: none;*/
+/*}*/
+
+/*.tv-pill.is-loading::after {*/
+/*  content: '';*/
+/*  position: absolute;*/
+/*  top: 0;*/
+/*  left: 0;*/
+/*  right: 0;*/
+/*  height: 2px;*/
+/*  background: linear-gradient(*/
+/*    90deg,*/
+/*    transparent,*/
+/*    var(--primary),*/
+/*    transparent*/
+/*  );*/
+/*  animation: loading 1.5s ease-in-out infinite;*/
+/*}*/
+
+/*@keyframes loading {*/
+/*  0% { transform: translateX(-100%); }*/
+/*  100% { transform: translateX(100%); }*/
+/*}*/
+
+/*!* Search Results Preview (optional enhancement) *!*/
+/*.tv-search-results {*/
+/*  position: absolute;*/
+/*  top: calc(100% + 8px);*/
+/*  left: 0;*/
+/*  right: 0;*/
+/*  background: var(--pure);*/
+/*  border: 2px solid var(--border);*/
+/*  border-radius: 14px;*/
+/*  box-shadow: 0 8px 32px rgba(15, 23, 42, .12);*/
+/*  max-height: 400px;*/
+/*  overflow-y: auto;*/
+/*  display: none;*/
+/*  z-index: 1000;*/
+/*  animation: slideDown 200ms ease-out;*/
+/*}*/
+
+/*.tv-search-results.show {*/
+/*  display: block;*/
+/*}*/
+
+/*@keyframes slideDown {*/
+/*  from {*/
+/*    opacity: 0;*/
+/*    transform: translateY(-8px);*/
+/*  }*/
+/*  to {*/
+/*    opacity: 1;*/
+/*    transform: translateY(0);*/
+/*  }*/
+/*}*/
+
+/*.tv-search-result-item {*/
+/*  padding: 0.875rem 1.25rem;*/
+/*  cursor: pointer;*/
+/*  transition: all 150ms ease;*/
+/*  border-bottom: 1px solid var(--surface);*/
+/*  display: flex;*/
+/*  align-items: center;*/
+/*  gap: 0.75rem;*/
+/*}*/
+
+/*.tv-search-result-item:last-child {*/
+/*  border-bottom: none;*/
+/*}*/
+
+/*.tv-search-result-item:hover {*/
+/*  background: var(--surface);*/
+/*}*/
+
+/*.tv-search-result-item:active {*/
+/*  background: var(--border);*/
+/*}*/
+
+/*!* Keyboard navigation highlight *!*/
+/*.tv-search-result-item.is-active {*/
+/*  background: rgba(108, 92, 231, 0.08);*/
+/*  color: var(--primary);*/
+/*}*/
+
+/*!* Enhanced Categories Dropdown Pill *!*/
+/*.navbar .tv-cat-pill {*/
+/*  --pill-pad-y: .5rem;*/
+/*  --pill-pad-x: 1rem;*/
+/*  padding: var(--pill-pad-y) var(--pill-pad-x);*/
+/*  border-radius: 9999px;*/
+/*  color: var(--subtext) !important;*/
+/*  background: transparent;*/
+/*  font-weight: 500;*/
+/*  border: 2px solid transparent;*/
+/*  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);*/
+/*  position: relative;*/
+/*  overflow: hidden;*/
+/*}*/
+
+/*.navbar .tv-cat-pill::before {*/
+/*  content: '';*/
+/*  position: absolute;*/
+/*  inset: 0;*/
+/*  background: var(--accent);*/
+/*  opacity: 0;*/
+/*  transition: opacity 200ms ease;*/
+/*  z-index: -1;*/
+/*}*/
+
+/*.navbar .tv-cat-pill:hover::before,*/
+/*.navbar .tv-cat-pill:focus::before,*/
+/*.navbar .tv-cat-pill.show::before {*/
+/*  opacity: 1;*/
+/*}*/
+
+
+/*.navbar .tv-cat-pill:hover,*/
+/*.navbar .tv-cat-pill:focus,*/
+/*.navbar .tv-cat-pill.show {*/
+/*  color: var(--accent-foreground) !important;*/
+/*  box-shadow: 0 2px 12px rgba(255, 183, 3, .25);*/
+/*  transform: translateY(-1px);*/
+/*  border-color: var(--accent);*/
+/*}*/
+
+/*!* Smooth Transitions *!*/
+/** {*/
+/*  -webkit-font-smoothing: antialiased;*/
+/*  -moz-osx-font-smoothing: grayscale;*/
+/*}*/
+
+/*!* Accessibility: Focus visible for keyboard navigation *!*/
+/*.tv-pill:focus-visible {*/
+/*  outline: 2px solid var(--primary);*/
+/*  outline-offset: 2px;*/
+/*}*/
+
+/*!* Dark mode adjustments *!*/
+/*.dark .tv-pill {*/
+/*  background: var(--card);*/
+/*  border-color: var(--border);*/
+/*}*/
+
+/*.dark .tv-pill:hover {*/
+/*  border-color: rgba(108, 92, 231, 0.5);*/
+/*}*/
+
+/*.dark .tv-search-results {*/
+/*  background: var(--card);*/
+/*  border-color: var(--border);*/
+/*}*/
+
+/*.dark .tv-search-result-item:hover {*/
+/*  background: rgba(255, 255, 255, 0.05);*/
+/*}*/

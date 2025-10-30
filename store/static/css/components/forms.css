@@ -1,0 +1,124 @@
+/* Search wrapper/pill */
+
+.search-wrapper {
+    position: relative;
+}
+
+.search-box {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid transparent;
+    border-radius: 12px;
+    padding: .75rem 1rem .75rem 3rem;
+    font-size: 15px;
+    color: var(--ink);
+    transition: all .25s cubic-bezier(.4, 0, .2, 1);
+    outline: none;
+}
+
+.sign-up-btn:hover {
+    background: var(--primary-hover, #5a4bd6);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(108, 92, 231, .3);
+}
+
+.search-box::placeholder {
+    color: var(--subtext);
+}
+
+.search-box:hover {
+    background: #F1F5F9;
+    border-color: var(--border);
+}
+
+.search-box:focus {
+    background: var(--pure);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(108, 92, 231, .1);
+}
+
+.search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--subtext);
+    font-size: 1.1rem;
+    pointer-events: none;
+    transition: color .25s ease;
+}
+
+.search-box:focus ~ .search-icon {
+    color: var(--primary);
+}
+
+/* Buttons in header */
+.categories-btn, .sign-in-btn {
+    background: transparent;
+    border: 0;
+    color: var(--body);
+    font-weight: 500;
+    font-size: 15px;
+    padding: .5rem 1rem;
+    border-radius: 8px;
+    transition: all .2s;
+}
+
+.categories-btn:hover, .sign-in-btn:hover {
+    background: var(--surface);
+    color: var(--ink);
+}
+
+.sign-up-btn {
+    background: var(--primary);
+    color: #fff;
+    border: 0;
+    font-weight: 600;
+    font-size: 15px;
+    padding: .625rem 1.5rem;
+    border-radius: 10px;
+    transition: all .2s;
+}
+
+.sign-up-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(108, 92, 231, .3);
+}
+
+.cart-btn {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: 0;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--body);
+    font-size: 1.25rem;
+    transition: all .2s;
+}
+
+.cart-btn:hover {
+    background: var(--surface);
+    color: var(--ink);
+}
+
+.cart-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: var(--primary);
+    color: #fff;
+    font-size: .7rem;
+    font-weight: 600;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px;
+}

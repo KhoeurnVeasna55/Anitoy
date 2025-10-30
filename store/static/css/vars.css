@@ -1,0 +1,30 @@
+:root {
+    --primary: #6C5CE7;
+    --primary-hover: #5a4bd6;
+    --ink: #0F172A;
+    --body: #334155;
+    --subtext: #64748B;
+    --border: #E2E8F0;
+    --surface: #F8FAFC;
+    --accent-foreground: #0F172A;
+    --accent: #FFB703;
+
+    --pure: #FFFFFF;
+    --font-heading: "Poppins", system-ui, sans-serif;
+    --font-body: "Inter", system-ui, sans-serif;
+
+
+    --radius-xs: 8px;
+    --radius-sm: 12px;
+    --radius-md: 16px;
+    --radius-lg: 20px;
+    --shadow-sm: 0 1px 2px rgba(15, 23, 42, .06);
+    --shadow-md: 0 4px 12px rgba(15, 23, 42, .08);
+
+    /* map minimal Bootstrap vars if needed */
+    --bs-body-bg: var(--pure);
+    --bs-body-color: var(--body);
+    --bs-border-color: var(--border);
+
+
+}
