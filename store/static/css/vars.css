@@ -26,5 +26,12 @@
     --bs-body-color: var(--body);
     --bs-border-color: var(--border);
 
+    --muted: #F8FAFC;
+    --line: #E2E8F0;
+    --card: #FFFFFF;
+    --secondary: #F8FAFC;
+    --primary-foreground: #FFFFFF;
+    --danger: #EF4444;
+    --danger-foreground: #FFFFFF;
 
 }

@@ -1,0 +1,63 @@
+{% load static %}
+
+<div class="product-card position-relative h-100 bg-white shadow-sm rounded overflow-hidden">
+    <a href="{{ product.get_absolute_url }}" class="stretched-link" aria-label="{{ product.name }}"></a>
+
+    <!-- Product Image -->
+    <div class="product-image">
+        <img
+            src="{% firstof product.cover_url product.get_primary_image_url '/static/img/placeholder.jpg' %}"
+            alt="{{ product.name }}"
+            loading="lazy"
+            decoding="async"
+            class="img-fluid object-fit-cover w-100 h-100"
+        >
+
+        {% if product.is_preorder %}
+            <span class="product-badge badge-preorder">PREORDER</span>
+        {% elif product.is_on_sale and product.list_price %}
+            {% if product.discount_percent %}
+                <span class="product-badge badge-sale">-{{ product.discount_percent }}%</span>
+            {% else %}
+                <span class="product-badge badge-sale">SALE</span>
+            {% endif %}
+        {% else %}
+            <span class="product-badge">NEW</span>
+        {% endif %}
+    </div>
+
+    <!-- Product Info -->
+    <div class="product-info p-3">
+        <div class="product-category small text-muted">{{ product.category.name }}</div>
+
+        <h3 class="product-name h6 mt-1 mb-2 text-truncate position-relative">
+            <a href="{{ product.get_absolute_url }}" class="stretched-link text-decoration-none text-dark">
+                {{ product.name }}
+            </a>
+        </h3>
+
+        <!-- Price -->
+        {% if product.discount_price %}
+        <div class="product-price">
+            <span class="fw-bold">${{ product.discount_price }}</span>
+            <span class="text-muted text-decoration-line-through ms-1">${{ product.price }}</span>
+        </div>
+        {% elif product.is_on_sale and product.list_price %}
+        <div class="product-price">
+            <span class="fw-bold">${{ product.price }}</span>
+            <span class="text-muted text-decoration-line-through ms-1">${{ product.list_price }}</span>
+        </div>
+        {% else %}
+        <div class="product-price fw-bold">${{ product.price }}</div>
+        {% endif %}
+
+        <!-- Stock Status -->
+        {% if product.stock is not None %}
+            {% if product.stock <= 0 %}
+                <span class="badge bg-secondary mt-2">Out of stock</span>
+            {% elif product.stock < 5 %}
+                <span class="badge bg-warning text-dark mt-2">Low stock</span>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>

@@ -1,0 +1,22 @@
+<nav class="pd-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+
+        {% if product %}
+        <li class="breadcrumb-item">
+            <a href="{% url 'home' %}?cat={{ product.category.slug }}">{{ product.category.name }}</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            {{ product.name|truncatewords:5 }}
+        </li>
+
+        {% elif page == "cart" %}
+        <li class="breadcrumb-item active" aria-current="page">Cart</li>
+
+        {% elif page == "checkout" %}
+        <li class="breadcrumb-item"><a href="{% url 'view_cart' %}">Cart</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+
+        {% endif %}
+    </ol>
+</nav>

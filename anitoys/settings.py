@@ -50,6 +50,8 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 # cart totals available in navbar, etc.
                 "store.context_processors.cart_summary",
+                "store.context_processors.global_shop",
+
             ],
         },
     },
@@ -92,6 +94,6 @@ MEDIA_ROOT = BASE_DIR / "media"  # uploaded product images
 
 # --- redirects after login/logout ---
 LOGIN_REDIRECT_URL = "/"
-LOGOUT_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "home"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

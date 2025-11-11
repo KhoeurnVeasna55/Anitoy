@@ -1,42 +1,69 @@
 <nav class="navbar navbar-expand-md tv-navbar">
-  <div class="container">
-    <!-- Brand -->
-    <a href="#" class="d-flex align-items-center text-decoration-none me-2">
-      <div class="brand-pill">T</div>
-      <span class="brand-text">ToyVerse</span>
-    </a>
+    <div class="container">
+        <!-- Brand -->
+        <a href="{% url 'home' %}" class="d-flex align-items-center text-decoration-none me-2">
+            <div class="brand-pill">A</div>
+            <span class="brand-text">Anitoys</span>
+        </a>
 
-    <!-- Hamburger -->
-    <button class="navbar-toggler ms-auto" type="button"
-            data-bs-toggle="collapse" data-bs-target="#tvNav"
-            aria-controls="tvNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="tvNav">
-      <!-- Left: Categories -->
-      <div class="d-flex align-items-center mt-3 mt-md-0">
-        <button class="categories-btn">
-          Categories <i class="bi bi-chevron-down" style="font-size:.75rem;"></i>
+        <!-- Hamburger -->
+        <button class="navbar-toggler ms-auto" type="button"
+                data-bs-toggle="collapse" data-bs-target="#tvNav"
+                aria-controls="tvNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
         </button>
-      </div>
 
-      <!-- Middle: Search -->
-      <div class="search-wrapper mt-3 mt-md-0 mx-md-3 flex-md-grow-1">
-        <input type="text" class="search-box" placeholder="Search collectibles...">
-        <i class="bi bi-search search-icon"></i>
-      </div>
+        <!-- Collapsible content -->
+        <div class="collapse navbar-collapse" id="tvNav">
+            <!-- Left: Categories -->
+            <div class="dropdown mt-3 mt-md-0">
+                <button class="categories-btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    Categories
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{% url 'product_list' %}">All</a></li>
+                    {% for c in categories %}
+                    <li>
+                        <a class="dropdown-item"
+                           href="{% url 'product_list' %}?cat={{ c.slug }}{% if q %}&q={{ q }}{% endif %}">
+                            {{ c.name }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
 
-      <!-- Right: Cart + Auth -->
-      <div class="d-flex align-items-center gap-2 ms-md-auto mt-3 mt-md-0">
-        <button class="cart-btn">
-          <i class="bi bi-cart"></i>
-          <span class="cart-badge">3</span>
-        </button>
-        <button class="sign-in-btn">Sign In</button>
-        <button class="sign-up-btn">Sign Up</button>
-      </div>
+            <!-- Middle: Search -->
+            <form action="{% url 'product_list' %}" method="get"
+                  class="search-wrapper mt-3 mt-md-0 mx-md-3 flex-md-grow-1">
+                {% if current_cat %}<input type="hidden" name="cat" value="{{ current_cat.slug }}">{% endif %}
+                <input type="search" name="q" value="{{ q|default:'' }}" class="search-box"
+                       placeholder="Search collectibles…">
+                <i class="bi bi-search search-icon"></i>
+            </form>
+
+            <!-- Right: Cart + Auth -->
+            <div class="d-flex align-items-center gap-2 ms-md-auto mt-3 mt-md-0">
+                <a class="cart-btn" href="{% url 'view_cart' %}">
+                    <i class="bi bi-cart"></i>
+                    {% if cart_total_qty %}
+                    <span class="cart-badge">{{ cart_total_qty }}</span>
+                    {% endif %}
+                </a>
+
+                {% if user.is_authenticated %}
+                <span class="sign-in-btn disabled" style="pointer-events:none;">Hi, {{ user.username }}</span>
+
+                <form action="{% url 'logout' %}" method="post" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="sign-up-btn">Sign Out</button>
+                </form>
+                {% else %}
+                <a class="sign-in-btn" href="{% url 'login' %}">Sign In</a>
+                <a class="sign-up-btn" href="{% url 'register' %}">Sign Up</a>
+                {% endif %}
+            </div>
+        </div>
     </div>
-  </div>
 </nav>

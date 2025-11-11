@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Search Results • ToyVerse
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4">
+        {% if current_cat %} Showing <strong>{{ current_cat.name }}</strong>{% endif %}
+        {% if q %} for "<strong>{{ q }}</strong>"{% endif %}
+    </h2>
+
+    {% if products %}
+    <div class="row g-4">
+        {% for product in products %}
+        <div class="col-6 col-sm-6 col-md-4 col-lg-3">
+            {% include "components/product_card.html" with product=product %}
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if products.paginator.num_pages > 1 %}
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if products.has_previous %}
+            <li class="page-item">
+                <a class="page-link"
+                   href="?{% if current_cat %}cat={{ current_cat.slug }}&{% endif %}{% if q %}q={{ q|urlencode }}&{% endif %}page={{ products.previous_page_number }}">Previous</a>
+            </li>
+            {% endif %}
+            {% for p in products.paginator.page_range %}
+            <li class="page-item {% if p == products.number %}active{% endif %}">
+                <a class="page-link"
+                   href="?{% if current_cat %}cat={{ current_cat.slug }}&{% endif %}{% if q %}q={{ q|urlencode }}&{% endif %}page={{ p }}">{{
+                    p }}</a>
+            </li>
+            {% endfor %}
+            {% if products.has_next %}
+            <li class="page-item">
+                <a class="page-link"
+                   href="?{% if current_cat %}cat={{ current_cat.slug }}&{% endif %}{% if q %}q={{ q|urlencode }}&{% endif %}page={{ products.next_page_number }}">Next</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+    {% else %}
+    <div class="alert alert-warning mt-4 text-center">No products found.</div>
+    {% endif %}
+</div>
+{% endblock %}

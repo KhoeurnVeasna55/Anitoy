@@ -1,0 +1,29 @@
+{# templates/components/cart_summary.html #}
+
+<h2 class="h5 mb-4">Order Summary</h2>
+
+<div class="summary-row d-flex justify-content-between">
+    <span>Subtotal</span>
+    <span>${{ cart.subtotal|default:"0.00" }}</span>
+</div>
+
+<div class="summary-row d-flex justify-content-between text-muted small">
+    <span>Shipping</span>
+    <span>Calculated at checkout</span>
+</div>
+
+<div class="summary-row d-flex justify-content-between text-muted small">
+    <span>Tax</span>
+    <span>Calculated at checkout</span>
+</div>
+
+<hr class="my-3">
+
+<div class="summary-total d-flex justify-content-between fw-bold fs-5">
+    <span>Total</span>
+    <span>${{ cart.total|default:"0.00" }}</span>
+</div>
+
+<button type="submit" class="btn btn-primary btn-lg rounded-pill w-100 mt-3">
+    <i class="bi bi-lock"></i> Checkout Selected
+</button>

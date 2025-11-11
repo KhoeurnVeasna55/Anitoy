@@ -1,7 +1,49 @@
+{# store/templates/pages/home.html #}
 {% extends "index.html" %}
 {% block title %}Home — ToyVerse{% endblock %}
 
 {% block content %}
-  <h1 class="h4 mb-3">New & Popular</h1>
-  <!-- your grid/cards go here -->
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <h1 class="h4 mb-0">
+        {% if current_cat %}{{ current_cat.name }}{% else %}New & Popular{% endif %}
+        {% if q %}<small class="text-muted fw-normal">— “{{ q }}”</small>{% endif %}
+    </h1>
+</div>
+
+{% if products %}
+<div class="row g-3">
+    {% for product in products %}
+    {% include "components/product_card.html" with product=product %}
+    {% endfor %}
+</div>
+
+{# pagination #}
+{% if products.paginator.num_pages > 1 %}
+<nav class="mt-4">
+    <ul class="pagination">
+        {% if products.has_previous %}
+        <li class="page-item">
+            <a class="page-link"
+               href="?{% if current_cat %}cat={{ current_cat.slug }}&{% endif %}{% if q %}q={{ q|urlencode }}&{% endif %}page={{ products.previous_page_number }}">Prev</a>
+        </li>
+        {% endif %}
+        {% for p in products.paginator.page_range %}
+        <li class="page-item {% if p == products.number %}active{% endif %}">
+            <a class="page-link"
+               href="?{% if current_cat %}cat={{ current_cat.slug }}&{% endif %}{% if q %}q={{ q|urlencode }}&{% endif %}page={{ p }}">{{
+                p }}</a>
+        </li>
+        {% endfor %}
+        {% if products.has_next %}
+        <li class="page-item">
+            <a class="page-link"
+               href="?{% if current_cat %}cat={{ current_cat.slug }}&{% endif %}{% if q %}q={{ q|urlencode }}&{% endif %}page={{ products.next_page_number }}">Next</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+{% else %}
+<div class="text-muted">No products found.</div>
+{% endif %}
 {% endblock %}

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Browse • ToyVerse</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/vars.css' %}?v=1">
+    <link rel="stylesheet" href="{% static 'css/components/navbar.css' %}?v=1">
+    <link rel="stylesheet" href="{% static 'css/pages/home.css' %}?v=1">
+</head>
+<body>
+{% include 'components/navbar.html' %}
+
+<section class="arrivals-section">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-end mb-4">
+            <div>
+                <h1 class="section-title mb-1">Browse {% if current_cat %}— {{ current_cat.name }}{% endif %}</h1>
+                {% if q %}<p class="section-subtitle">Search: “{{ q }}”</p>{% endif %}
+            </div>
+        </div>
+
+        <div class="row g-4">
+            {% for p in page_obj %}
+            <div class="col-12 col-sm-6 col-lg-3">
+                <a href="{{ p.get_absolute_url }}" class="text-decoration-none">
+                    <div class="product-card">
+                        <div class="product-image">
+                            {% with url=p.cover_url|default_if_none:'' %}
+                            {% if url %}<img src="{{ url }}" alt="{{ p.name }}">
+                            {% else %}<img src="{% static 'img/placeholder-600x480.jpg' %}" alt="{{ p.name }}">{% endif
+                            %}
+                            {% endwith %}
+                            {% if p.is_preorder %}<span class="product-badge">PREORDER</span>
+                            {% elif p.is_limited %}<span class="product-badge">LIMITED</span>
+                            {% endif %}
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">{{ p.category.name }}</div>
+                            <h3 class="product-name">{{ p.name }}</h3>
+                            {% if p.is_on_sale and p.list_price and p.list_price > p.price %}
+                            <div class="d-flex align-items-baseline gap-2">
+                                <span class="product-price">${{ p.price }}</span>
+                                <del class="text-muted">${{ p.list_price }}</del>
+                                <span class="badge bg-danger-subtle text-danger">{{ p.discount_percent }}% OFF</span>
+                            </div>
+                            {% else %}
+                            <div class="product-price">${{ p.price }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% empty %}
+            <p class="text-muted">No products match your filters.</p>
+            {% endfor %}
+        </div>
+
+        {% if page_obj.paginator.num_pages > 1 %}
+        <nav class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link"
+                       href="?page={{ page_obj.previous_page_number }}{% if current_cat %}&cat={{ current_cat.slug }}{% endif %}{% if q %}&q={{ q }}{% endif %}">Previous</a>
+                </li>
+                {% endif %}
+                <li class="page-item disabled"><span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                </li>
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link"
+                       href="?page={{ page_obj.next_page_number }}{% if current_cat %}&cat={{ current_cat.slug }}{% endif %}{% if q %}&q={{ q }}{% endif %}">Next</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+</section>
+
+<footer class="border-top py-4 text-center small text-muted">© {{ now|date:"Y" }} ToyVerse</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

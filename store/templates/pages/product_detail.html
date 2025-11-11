@@ -1,0 +1,306 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+{{ product.name|truncatewords:10 }} – {{ product.category.name }} • ToyVerse
+{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/pages/product_detail.css' %}?v=3">
+{% endblock %}
+
+{% block content %}
+<section class="product-detail-section">
+    <div class="container">
+
+        <!-- Breadcrumb -->
+        <nav class="pd-breadcrumb" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'product_list' %}">Home</a></li>
+                <li class="breadcrumb-item">
+                    <a href="{% url 'product_list' %}?cat={{ product.category.slug }}">{{ product.category.name }}</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    {{ product.name|truncatewords:5 }}
+                </li>
+            </ol>
+        </nav>
+
+
+        <div class="row g-4 g-lg-5">
+            <!-- LEFT: Gallery -->
+            <div class="col-lg-6">
+                <div class="pd-gallery-wrapper">
+                    <div class="pd-main position-relative">
+                        {% with main=product.cover_url|default:product.get_primary_image_url %}
+                        <img id="mainImage"
+                             src="{{ main|default:'/static/img/placeholder-600x480.jpg' }}"
+                             alt="{{ product.name }}">
+                        {% endwith %}
+
+                        {% if product.is_preorder %}
+                        <span class="pd-badge preorder">⏱️ Preorder</span>
+                        {% elif product.is_on_sale and product.list_price %}
+                        {% if product.discount_percent %}
+                        <span class="pd-badge sale">🔥 -{{ product.discount_percent }}%</span>
+                        {% else %}
+                        <span class="pd-badge sale">🔥 Sale</span>
+                        {% endif %}
+                        {% elif product.is_limited %}
+                        <span class="pd-badge limited">⭐ Limited</span>
+                        {% else %}
+                        <span class="pd-badge new">✨ New</span>
+                        {% endif %}
+                    </div>
+
+                    <!-- Thumbnails -->
+                    <div class="pd-thumbs">
+                        {% with main=product.cover_url|default:product.get_primary_image_url %}
+                        {% if main %}
+                        <button type="button" class="pd-thumb active" data-src="{{ main }}" aria-label="Main image">
+                            <img src="{{ main }}" alt="{{ product.name }}">
+                        </button>
+                        {% endif %}
+                        {% endwith %}
+
+                        {% for g in images %}
+                        {% if g.image %}
+                        {% with url=g.image.url %}
+                        {% if url and url != product.cover_url %}
+                        <button type="button" class="pd-thumb" data-src="{{ url }}">
+                            <img src="{{ url }}" alt="{{ g.alt_text|default:product.name }}">
+                        </button>
+                        {% endif %}
+                        {% endwith %}
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT: Product Info -->
+            <div class="col-lg-6">
+                <div class="pd-info-wrapper">
+                    <h1 class="pd-title">{{ product.name }}</h1>
+
+                    <div class="pd-meta">
+            <span class="pd-meta-item">
+              <i class="bi bi-tag-fill"></i> {{ product.category.name }}
+            </span>
+                        {% if product.series %}
+                        <span class="pd-meta-divider"></span>
+                        <span class="pd-meta-item">
+              <i class="bi bi-collection"></i> {{ product.series }}
+            </span>
+                        {% endif %}
+                    </div>
+
+                    <!-- Price -->
+                    <div class="pd-price-section">
+                        {% if product.is_on_sale and product.list_price and product.list_price > product.price %}
+                        <div class="pd-price">
+                            <span class="now">${{ product.price }}</span>
+                            <span class="was">${{ product.list_price }}</span>
+                            {% if product.discount_percent %}
+                            <span class="off">{{ product.discount_percent }}% OFF</span>
+                            {% endif %}
+                        </div>
+                        {% else %}
+                        <div class="pd-price">
+                            <span class="now">${{ product.price }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Status Badges -->
+                    {% if product.is_preorder or product.is_limited or product.stock == 0 %}
+                    <div class="pd-status-badges">
+                        {% if product.is_preorder %}
+                        <span class="pd-status-badge preorder">
+              <i class="bi bi-clock-history"></i> Preorder
+            </span>
+                        {% endif %}
+                        {% if product.is_limited %}
+                        <span class="pd-status-badge limited">
+              <i class="bi bi-star-fill"></i> Limited Edition
+            </span>
+                        {% endif %}
+                        {% if product.stock == 0 %}
+                        <span class="pd-status-badge out-of-stock">
+              <i class="bi bi-x-circle"></i> Out of Stock
+            </span>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    <!-- Description -->
+                    <div class="pd-description">
+                        {% if product.description %}
+                        {{ product.description|linebreaks }}
+                        {% else %}
+                        <p class="text-muted">Discover this amazing collectible. Perfect for collectors and enthusiasts
+                            alike.</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Add to Cart Form -->
+                    <form method="post" action="{% url 'add_to_cart' product.slug %}" class="pd-actions">
+                        {% csrf_token %}
+                        <div class="qty-control" role="group" aria-label="Quantity">
+                            <button type="button" class="qty-btn" data-step="-1" aria-label="Decrease quantity">
+                                <i class="bi bi-dash"></i>
+                            </button>
+                            <input id="qty" name="quantity" type="number" value="1"
+                                   min="1"
+                                   max="{% if product.is_preorder %}99{% else %}{{ product.stock|default:99 }}{% endif %}"
+                                   inputmode="numeric" pattern="[0-9]*" aria-label="Quantity">
+                            <button type="button" class="qty-btn" data-step="1" aria-label="Increase quantity">
+                                <i class="bi bi-plus"></i>
+                            </button>
+                        </div>
+
+                        <button type="submit" class="pd-btn pd-btn-primary"
+                                {% if not product.is_preorder and not product.stock %}disabled{% endif %}>
+                            <i class="bi bi-cart-plus"></i>
+                            {% if product.is_preorder %}Preorder Now{% else %}Add to Cart{% endif %}
+                        </button>
+                    </form>
+
+                    <!-- Browse More -->
+                    <a href="{% url 'home' %}?cat={{ product.category.slug }}" class="pd-btn pd-btn-secondary w-100">
+                        <i class="bi bi-grid-3x3-gap"></i> Browse More in {{ product.category.name }}
+                    </a>
+
+                    <!-- Product Details -->
+                    <div class="pd-details-section">
+                        <h2 class="pd-section-title">
+                            <i class="bi bi-info-circle me-2"></i>Product Details
+                        </h2>
+                        <dl class="row pd-specs">
+                            {% if product.manufacturer %}
+                            <dt class="col-4">Manufacturer</dt>
+                            <dd class="col-8">{{ product.manufacturer }}</dd>
+                            {% endif %}
+
+                            {% if product.series %}
+                            <dt class="col-4">Series</dt>
+                            <dd class="col-8">{{ product.series }}</dd>
+                            {% endif %}
+
+                            {% if product.scale %}
+                            <dt class="col-4">Scale</dt>
+                            <dd class="col-8">{{ product.scale }}</dd>
+                            {% endif %}
+
+                            {% if product.sku %}
+                            <dt class="col-4">SKU</dt>
+                            <dd class="col-8">{{ product.sku }}</dd>
+                            {% endif %}
+
+                            {% if product.release_date %}
+                            <dt class="col-4">Release Date</dt>
+                            <dd class="col-8">{{ product.release_date|date:"F j, Y" }}</dd>
+                            {% endif %}
+
+                            <dt class="col-4">Stock</dt>
+                            <dd class="col-8">
+                                {% if product.stock > 10 %}
+                                <span class="text-success"><i class="bi bi-check-circle-fill"></i> In Stock</span>
+                                {% elif product.stock > 0 %}
+                                <span class="text-warning"><i class="bi bi-exclamation-triangle-fill"></i> Only {{ product.stock }} left</span>
+                                {% else %}
+                                <span class="text-muted"><i class="bi bi-x-circle-fill"></i> Out of Stock</span>
+                                {% endif %}
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Products -->
+        {% if related %}
+        <div class="pd-related-section mt-5">
+            <h3 class="pd-related-title"><i class="bi bi-stars me-2"></i>You May Also Like</h3>
+            <div class="row g-4 pd-related">
+                {% for p in related %}
+                <div class="col-6 col-md-4 col-lg-3">
+                    <a href="{{ p.get_absolute_url }}" class="text-decoration-none">
+                        <div class="product-card">
+                            <div class="product-image">
+                                {% with url=p.cover_url|default_if_none:'' %}
+                                {% if url %}
+                                <img src="{{ url }}" alt="{{ p.name }}">
+                                {% else %}
+                                <img src="{% static 'img/placeholder-600x480.jpg' %}" alt="{{ p.name }}">
+                                {% endif %}
+                                {% endwith %}
+                            </div>
+                            <div class="product-info">
+                                <div class="product-category">{{ p.category.name }}</div>
+                                <h4 class="product-name">{{ p.name|truncatewords:8 }}</h4>
+                                <div class="product-price">${{ p.price }}</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const main = document.getElementById("mainImage");
+        const thumbs = document.querySelectorAll(".pd-thumb");
+
+        thumbs.forEach(thumb => {
+            thumb.addEventListener("click", () => {
+                thumbs.forEach(t => t.classList.remove("active"));
+                thumb.classList.add("active");
+                const src = thumb.getAttribute("data-src");
+                if (src && main) {
+                    main.style.opacity = "0.5";
+                    setTimeout(() => {
+                        main.src = src;
+                        main.style.opacity = "1";
+                    }, 150);
+                }
+            });
+        });
+
+        const qtyInput = document.getElementById("qty");
+        const qtyBtns = document.querySelectorAll(".qty-btn");
+
+        qtyBtns.forEach(btn => {
+            btn.addEventListener("click", () => {
+                const step = parseInt(btn.getAttribute("data-step"));
+                const current = parseInt(qtyInput.value) || 1;
+                const min = parseInt(qtyInput.getAttribute("min")) || 1;
+                const max = parseInt(qtyInput.getAttribute("max")) || 99;
+
+                let newValue = current + step;
+                if (newValue < min) newValue = min;
+                if (newValue > max) newValue = max;
+
+                qtyInput.value = newValue;
+            });
+        });
+
+        qtyInput.addEventListener("change", () => {
+            const min = parseInt(qtyInput.getAttribute("min")) || 1;
+            const max = parseInt(qtyInput.getAttribute("max")) || 99;
+            let value = parseInt(qtyInput.value) || min;
+
+            if (value < min) value = min;
+            if (value > max) value = max;
+
+            qtyInput.value = value;
+        });
+    });
+</script>
+{% endblock %}

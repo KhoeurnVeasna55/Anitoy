@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Home • ToyVerse
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+    {% if show_hero %}
+    {% include "components/main_content.html" %}
+    {% endif %}
+
+    {% if not show_hero %}
+    {% if current_cat or q %}
+    <p class="text-muted mb-4">
+        Showing
+        {% if current_cat %}<strong>{{ current_cat.name }}</strong>{% endif %}
+        {% if q %} for "<strong>{{ q }}</strong>"{% endif %}
+    </p>
+    {% endif %}
+
+    {% if products %}
+    <div class="row g-4">
+        {% for product in products %}
+        <div class="col-6 col-sm-6 col-md-4 col-lg-3 d-flex">
+            {% include "components/product_card.html" with product=product %}
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-warning mt-4 text-center">
+        No products found.
+    </div>
+    {% endif %}
+
+    {% endif %}
+
+</div>
+{% endblock %}

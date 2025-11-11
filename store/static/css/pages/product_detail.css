@@ -1,0 +1,685 @@
+/* =============================================
+   ENHANCED PRODUCT DETAIL PAGE STYLES
+   ============================================= */
+
+/* Product Detail Container */
+.product-detail-section {
+    padding: 3rem 0 5rem;
+    background: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%);
+}
+
+/* Breadcrumb Enhancement */
+.pd-breadcrumb {
+    margin-bottom: 2rem;
+    padding: 0;
+    background: transparent;
+}
+
+.pd-breadcrumb .breadcrumb {
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    font-size: 0.875rem;
+}
+
+.pd-breadcrumb .breadcrumb-item {
+    color: var(--subtext, #64748b);
+}
+
+.pd-breadcrumb .breadcrumb-item a {
+    color: var(--subtext, #64748b);
+    text-decoration: none;
+    transition: color 200ms ease;
+}
+
+.pd-breadcrumb .breadcrumb-item a:hover {
+    color: var(--primary, #6c5ce7);
+}
+
+.pd-breadcrumb .breadcrumb-item.active {
+    color: var(--ink, #0f172a);
+    font-weight: 500;
+}
+
+/* ===== LEFT SIDE: Gallery ===== */
+.pd-gallery-wrapper {
+    position: sticky;
+    top: 100px;
+}
+
+/* Main Image Container */
+.pd-main {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    background: var(--surface, #f8fafc);
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+    margin-bottom: 1rem;
+    transition: box-shadow 300ms ease;
+    width: 100%;
+}
+
+.pd-main:hover {
+    box-shadow: 0 8px 32px rgba(15, 23, 42, 0.12);
+}
+
+.pd-main img {
+    width: 100%;
+    height: auto;
+    max-height: 600px;
+    object-fit: contain;
+    display: block;
+    aspect-ratio: 1 / 1;
+    transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
+    background: white;
+}
+
+.pd-main:hover img {
+    transform: scale(1.05);
+}
+
+/* Ensure image container maintains aspect ratio */
+.pd-main::before {
+    content: '';
+    display: block;
+    padding-top: 100%; /* 1:1 aspect ratio */
+}
+
+.pd-main img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Status Badges */
+.pd-badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    padding: 0.5rem 1rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(8px);
+    z-index: 10;
+    animation: slideInLeft 400ms ease-out;
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.pd-badge.new {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    color: #fff;
+}
+
+.pd-badge.sale {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: #fff;
+}
+
+.pd-badge.preorder {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: #fff;
+}
+
+.pd-badge.limited {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #fff;
+}
+
+/* Thumbnails Strip */
+/* Thumbnails strip: responsive + snap */
+.pd-thumbs {
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    padding: 0.5rem 0;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border, #e2e8f0) transparent;
+    scroll-snap-type: x mandatory; /* NEW: smooth snap on mobile */
+}
+
+.pd-thumbs::-webkit-scrollbar {
+    height: 6px;
+}
+
+.pd-thumbs::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.pd-thumbs::-webkit-scrollbar-thumb {
+    background: var(--border, #e2e8f0);
+    border-radius: 3px;
+}
+
+.pd-thumbs::-webkit-scrollbar-thumb:hover {
+    background: var(--subtext, #64748b);
+}
+
+/* Each thumb: square, fluid width, no distortion */
+.pd-thumb {
+    position: relative;
+    flex: 0 0 auto;
+    width: clamp(64px, 16vw, 96px); /* NEW: responsive width */
+    aspect-ratio: 1 / 1; /* NEW: perfect square */
+    border-radius: 14px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 3px solid transparent;
+    background: var(--surface, #f8fafc);
+    transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    scroll-snap-align: center; /* NEW: snap target */
+}
+
+.pd-thumb::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0);
+    transition: background 250ms ease;
+}
+
+/* Fill the square; match main image behavior (contain) */
+.pd-thumb img {
+    position: absolute; /* NEW */
+    inset: 0; /* NEW */
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    background: #fff;
+}
+
+.pd-thumb:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+}
+
+.pd-thumb:hover::after {
+    background: rgba(108, 92, 231, 0.1);
+}
+
+.pd-thumb.active {
+    border-color: var(--primary, #6c5ce7);
+    box-shadow: 0 4px 16px rgba(108, 92, 231, 0.25);
+}
+
+/* ===== RIGHT SIDE: Product Info ===== */
+.pd-info-wrapper {
+    background: white;
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+}
+
+/* Product Title */
+.pd-title {
+    font-family: var(--font-heading, "Poppins", sans-serif);
+    font-size: 2.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--ink, #0f172a);
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+}
+
+/* Meta Info (Category • Series) */
+.pd-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--subtext, #64748b);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+}
+
+.pd-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+}
+
+.pd-meta-divider {
+    width: 4px;
+    height: 4px;
+    background: var(--border, #e2e8f0);
+    border-radius: 50%;
+}
+
+/* Price Section */
+.pd-price-section {
+    background: linear-gradient(135deg, rgba(108, 92, 231, 0.05) 0%, rgba(108, 92, 231, 0.02) 100%);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(108, 92, 231, 0.1);
+}
+
+.pd-price {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.pd-price .now {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--primary, #6c5ce7);
+    line-height: 1;
+    font-family: var(--font-heading, "Poppins", sans-serif);
+}
+
+.pd-price .was {
+    font-size: 1.25rem;
+    color: var(--subtext, #64748b);
+    text-decoration: line-through;
+    font-weight: 500;
+}
+
+.pd-price .off {
+    font-weight: 700;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: #fff;
+    border-radius: 8px;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+}
+
+/* Status Badges Row */
+.pd-status-badges {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+}
+
+.pd-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.pd-status-badge.preorder {
+    background: rgba(245, 158, 11, 0.1);
+    color: #d97706;
+}
+
+.pd-status-badge.limited {
+    background: rgba(15, 23, 42, 0.1);
+    color: #0f172a;
+}
+
+.pd-status-badge.out-of-stock {
+    background: rgba(100, 116, 139, 0.1);
+    color: #64748b;
+}
+
+/* Description */
+.pd-description {
+    color: var(--body, #334155);
+    line-height: 1.8;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    padding: 1.25rem;
+    background: var(--surface, #f8fafc);
+    border-radius: 12px;
+    border-left: 4px solid var(--primary, #6c5ce7);
+}
+
+/* ===== Actions Row ===== */
+.pd-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: var(--surface, #f8fafc);
+    border-radius: 16px;
+}
+
+/* Quantity Control */
+.qty-control {
+    display: inline-flex;
+    align-items: center;
+    height: 52px;
+    border: 2px solid var(--border, #e2e8f0);
+    border-radius: 14px;
+    background: white;
+    overflow: hidden;
+    transition: all 250ms ease;
+}
+
+.qty-control:focus-within {
+    border-color: var(--primary, #6c5ce7);
+    box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.1);
+}
+
+.qty-btn {
+    width: 52px;
+    height: 52px;
+    border: none;
+    background: transparent;
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--ink, #0f172a);
+    transition: all 200ms ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.qty-btn:hover {
+    background: var(--surface, #f8fafc);
+    color: var(--primary, #6c5ce7);
+}
+
+.qty-btn:active {
+    transform: scale(0.95);
+}
+
+.qty-control input[type="number"] {
+    width: 70px;
+    height: 52px;
+    border: none;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.125rem;
+    color: var(--ink, #0f172a);
+    background: transparent;
+    -moz-appearance: textfield;
+}
+
+.qty-control input[type="number"]::-webkit-outer-spin-button,
+.qty-control input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.qty-control input[type="number"]:focus {
+    outline: none;
+}
+
+/* Action Buttons */
+.pd-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 52px;
+    padding: 0 2rem;
+    border-radius: 14px;
+    border: 2px solid transparent;
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: var(--font-body, "Inter", sans-serif);
+}
+
+.pd-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.pd-btn-primary {
+    background: var(--primary, #6c5ce7);
+    color: white;
+    border-color: var(--primary, #6c5ce7);
+    flex: 1;
+    min-width: 200px;
+}
+
+.pd-btn-primary:hover:not(:disabled) {
+    background: #5a4bd6;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(108, 92, 231, 0.35);
+}
+
+.pd-btn-primary:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.pd-btn-secondary {
+    background: white;
+    color: var(--ink, #0f172a);
+    border-color: var(--border, #e2e8f0);
+}
+
+.pd-btn-secondary:hover {
+    background: var(--surface, #f8fafc);
+    border-color: var(--primary, #6c5ce7);
+    color: var(--primary, #6c5ce7);
+}
+
+/* ===== Details Section ===== */
+.pd-details-section {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 16px;
+    border: 1px solid var(--border, #e2e8f0);
+}
+
+.pd-section-title {
+    font-family: var(--font-heading, "Poppins", sans-serif);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--ink, #0f172a);
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--surface, #f8fafc);
+}
+
+.pd-specs {
+    margin: 0;
+}
+
+.pd-specs dt {
+    font-weight: 600;
+    color: var(--subtext, #64748b);
+    font-size: 0.875rem;
+    padding: 0.75rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.pd-specs dd {
+    font-weight: 500;
+    color: var(--ink, #0f172a);
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--surface, #f8fafc);
+}
+
+.pd-specs dd:last-of-type {
+    border-bottom: none;
+}
+
+/* ===== Related Products Section ===== */
+.pd-related-section {
+    margin-top: 5rem;
+}
+
+.pd-related-title {
+    font-family: var(--font-heading, "Poppins", sans-serif);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--ink, #0f172a);
+    margin-bottom: 2rem;
+}
+
+.pd-related .product-card {
+    background: white;
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100%;
+}
+
+.pd-related .product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
+    border-color: rgba(108, 92, 231, 0.3);
+}
+
+.pd-related .product-image {
+    aspect-ratio: 4 / 3;
+    background: var(--surface, #f8fafc);
+    overflow: hidden;
+}
+
+.pd-related .product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    transition: transform 300ms ease;
+}
+
+.pd-related .product-card:hover .product-image img {
+    transform: scale(1.1);
+}
+
+.pd-related .product-info {
+    padding: 1.25rem;
+}
+
+.pd-related .product-category {
+    font-size: 0.75rem;
+    color: var(--primary, #6c5ce7);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+}
+
+.pd-related .product-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink, #0f172a);
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}
+
+.pd-related .product-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary, #6c5ce7);
+    font-family: var(--font-heading, "Poppins", sans-serif);
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 991.98px) {
+    .pd-gallery-wrapper {
+        position: static;
+        margin-bottom: 2rem;
+    }
+
+    .pd-info-wrapper {
+        padding: 1.5rem;
+    }
+
+    .pd-title {
+        font-size: 1.75rem;
+    }
+
+    .pd-price .now {
+        font-size: 2rem;
+    }
+
+    .pd-actions {
+        flex-direction: column;
+    }
+
+    .pd-btn-primary {
+        width: 100%;
+    }
+
+    .qty-control {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .product-detail-section {
+        padding: 2rem 0 3rem;
+    }
+
+    .pd-title {
+        font-size: 1.5rem;
+    }
+
+    .pd-price .now {
+        font-size: 1.75rem;
+    }
+
+    .pd-thumb {
+        width: 70px;
+        height: 70px;
+    }
+}
+
+.pd-main {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    background: var(--surface, #f8fafc);
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+    margin-bottom: 1rem;
+    transition: box-shadow 300ms ease;
+    width: 100%;
+}
+
+.pd-main::before {
+    content: "";
+    display: block;
+    padding-top: 100%;
+}
+
+.pd-main img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    background: #fff;
+    transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pd-main:hover {
+    box-shadow: 0 8px 32px rgba(15, 23, 42, 0.12);
+}
+
+.pd-main:hover img {
+    transform: scale(1.03);
+}
