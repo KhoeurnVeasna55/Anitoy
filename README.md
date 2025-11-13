@@ -4,6 +4,17 @@ A simple and clean Django e-commerce website for browsing, searching, and purcha
 
 ---
 
+## 👥 Group Members
+
+| Member Name        | Role / Contribution |
+|-------------------|----------------------|
+| **Khoeurn Veasna** | Team Leader, Full-Stack Developer (Frontend + Backend), UI Design,Hosting |
+| **Bora Visal**     | Backend Developer, Database & Models |
+| **Ang Putheareak** | Frontend Developer, Styling & Components |
+| **Lim Vansinh**    | Testing, Debugging, Documentation |
+
+---
+
 ## 🚀 Features
 
 - User login & registration  
@@ -20,7 +31,8 @@ A simple and clean Django e-commerce website for browsing, searching, and purcha
 
 ## 🛠️ Tech Stack
 
-- **Django** (Python)  
+- **Django**  
+- **Python**  
 - **Bootstrap 5**  
 - **HTML / CSS / JavaScript**  
 - **PostgreSQL**  
