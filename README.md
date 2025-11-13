@@ -1,54 +1,31 @@
-✅ 1. Project Name
+# 🎎 Anitoys — Anime Collectibles Store
 
-What should the project be called?
-Example: Anitoys E-Commerce, ToyVerse Store, etc.
+A simple and clean Django e-commerce website for browsing, searching, and purchasing anime collectible figures.
 
-✅ 2. Short Description
+---
 
-What is the purpose of the project?
-Example:
+## 🚀 Features
 
-Anitoys is an e-commerce website built with Django that allows users to browse, search, and purchase anime collectible figures.
+- User login & registration  
+- Browse products by category  
+- Product detail pages  
+- Add to cart / update quantity  
+- Select items to checkout  
+- Checkout form (name, email, address, etc.)  
+- Upload payment slip  
+- Search bar  
+- Admin panel for managing products & orders  
 
-✅ 3. Features Included
+---
 
-Tell me which features exist so far:
+## 🛠️ Tech Stack
 
-✔ User authentication (login/register)?
-✔ Categories & product filtering?
-✔ Product details?
-✔ Add to cart?
-✔ Checkout?
-✔ Payment upload?
-✔ Admin panel?
-✔ Search bar?
+- **Django** (Python)  
+- **Bootstrap 5**  
+- **HTML / CSS / JavaScript**  
+- **PostgreSQL**  
+- **Pillow** (image handling)
 
-Just list them (or say “same as my project”), and I’ll format them nicely.
+---
 
-✅ 4. Tech Stack
 
-Confirm the technologies:
-
-Django
-
-Python
-
-Bootstrap
-
-HTML/CSS
-
-JavaScript
-
-SQLite / PostgreSQL?
-
-Pillow?
-
-Add anything else if needed.
-
-✅ 5. Setup Instructions
-
-Do you want me to write:
-
-For Windows only
-
-Universal (Windows/Mac/Linux)
