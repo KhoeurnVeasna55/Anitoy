@@ -1,46 +1,103 @@
-<!doctype html>
+<!DOCTYPE html>
 {% load static %}
-
+{% load widget_tweaks %}
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Sign in — ToyVerse</title>
+    <meta charset="UTF-8">
+    <title>Login • Anitoys</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #6C5CE7;
+        }
+
+        body {
+            background: #FFFFFF;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .auth-box {
+            max-width: 420px;
+            margin: auto;
+            padding: 2.5rem;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, .15);
+            animation: slideUp .5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background-color: #5947d6;
+            border-color: #5947d6;
+        }
+
+        a {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        a:hover {
+            color: #4b3cc9;
+        }
+    </style>
 </head>
-<body class="bg-light">
-<div class="container py-5">
-    <div class="mx-auto" style="max-width:420px;">
-        <div class="card shadow-sm">
-            <div class="card-body p-4">
-                <h1 class="h4 fw-bold mb-3">Sign in</h1>
 
-                {% if form.errors %}
-                <div class="alert alert-danger">Please check your username/password.</div>
-                {% endif %}
+<body>
 
-                <form method="post" action="">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <label class="form-label">Username</label>
-                        {{ form.username|add_class:"form-control" }}
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Password</label>
-                        {{ form.password|add_class:"form-control" }}
-                    </div>
-                    <button class="btn btn-primary w-100">Sign in</button>
-                </form>
 
-                <div class="text-center mt-3">
-                    <a href="{% url 'password_reset' %}">Forgot password?</a>
-                </div>
-            </div>
+<div class="auth-box">
+    <h3 class="text-center mb-4 fw-bold" style="color: var(--primary);">
+        Welcome Back
+    </h3>
+
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <div class="mb-3">
+            <label class="form-label">Username</label>
+            {{ form.username|add_class:"form-control form-control-lg" }}
         </div>
 
-        <p class="text-center text-muted mt-3">
-            New here?
-            <a href="{% url 'register' %}">Create an account</a>
-        </p>
+        <div class="mb-3">
+            <label class="form-label">Password</label>
+            {{ form.password|add_class:"form-control form-control-lg" }}
+        </div>
+
+        <div class="d-grid mt-4">
+            <button type="submit" class="btn btn-primary btn-lg">Sign In</button>
+        </div>
+    </form>
+
+    <div class="mt-4 text-center">
+        <small>Don't have an account? <a href="{% url 'register' %}">Sign Up</a></small>
     </div>
 </div>
 </body>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+{% load static %}
+{% load widget_tweaks %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Verification • Anitoys</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+    <style>
+        :root {
+            --primary: #6C5CE7;
+        }
+
+        body {
+            background: #eef1ff;
+            font-family: "Poppins", sans-serif;
+        }
+
+        .payment-box {
+            max-width: 600px;
+            margin: 4rem auto;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+        }
+
+        .title {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .qr-box img {
+            width: 260px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(108, 92, 231, 0.2);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            border-color: var(--primary);
+            font-weight: 600;
+            border-radius: 10px;
+        }
+
+        .btn-primary:hover {
+            background: #5946dd;
+        }
+
+        .btn-outline-secondary {
+            border-radius: 10px;
+        }
+
+        .info-text {
+            font-size: 0.95rem;
+            color: #64748b;
+            margin-top: .4rem;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="payment-box text-center">
+
+    <h2 class="title mb-2">Scan & Pay</h2>
+    <p class="text-muted mb-4">After paying, upload your payment receipt.</p>
+
+    <!-- QR Image -->
+    <div class="qr-box mb-4">
+        <img src="{% static 'img/QRveas.jpg' %}" alt="Payment QR">
+    </div>
+
+    <!-- Messages -->
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+
+    <!-- Upload Form -->
+    <form action="{% url 'upload_payment' order.id %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <label class="form-label fw-semibold">Upload Payment Receipt</label>
+        {{ upload_form.payment_screenshot|add_class:"form-control" }}
+
+        <p class="info-text">Accepted: JPG, PNG • Max 5 MB</p>
+
+        <button class="btn btn-primary w-100 mt-3">Submit Payment</button>
+    </form>
+
+    <a href="{% url 'home' %}" class="btn btn-outline-secondary w-100 mt-4">Back to Home</a>
+
+</div>
+
+</body>
+</html>

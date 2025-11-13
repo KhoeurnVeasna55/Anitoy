@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.forms import BaseInlineFormSet
+from django.utils.html import format_html
 
 from .models import Category, Product, Order, OrderItem, ProductImage
 
@@ -54,8 +55,42 @@ class OrderItemInline(admin.TabularInline):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ("id", "full_name", "email", "created_at", "total_amount")
-    date_hierarchy = "created_at"
+    list_display = (
+        "id",
+        "full_name",
+        "email",
+        "status",
+        "payment_preview",
+        "total_amount",
+        "created_at",
+    )
+    list_filter = ("status", "created_at")
     search_fields = ("full_name", "email")
-    readonly_fields = ("created_at", "total_amount")
+
+    readonly_fields = ("created_at", "total_amount", "payment_preview")
+
     inlines = (OrderItemInline,)
+
+    actions = ["mark_verified", "mark_rejected"]
+
+    def mark_verified(self, request, queryset):
+        updated = queryset.update(status="verified")
+        self.message_user(request, f"{updated} order(s) marked as Verified.")
+
+    def mark_rejected(self, request, queryset):
+        updated = queryset.update(status="rejected")
+        self.message_user(request, f"{updated} order(s) marked as Rejected.")
+
+    mark_verified.short_description = "Mark selected orders as Verified"
+    mark_rejected.short_description = "Mark selected orders as Rejected"
+
+    def payment_preview(self, obj):
+        if obj.payment_screenshot:
+            return format_html(
+                '<a href="{}" target="_blank">'
+                '<img src="{}" style="height:70px; border-radius:6px; border:1px solid #ddd;">'
+                "</a>",
+                obj.payment_screenshot.url,
+                obj.payment_screenshot.url,
+            )
+        return "No screenshot"

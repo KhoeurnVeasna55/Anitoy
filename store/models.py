@@ -6,6 +6,7 @@ from django.templatetags.static import static
 from django.urls import reverse
 from django.utils.text import slugify
 from django.core.exceptions import ValidationError
+from django.contrib.auth.forms import User
 
 
 def unique_slugify(instance, source_value, slug_field="slug", extra_qs=None):
@@ -135,11 +136,8 @@ class Product(models.Model):
             return int(round((self.list_price - self.price) / self.list_price * 100))
         return 0
 
-    # ---- Media helpers
     def cover(self):
-        """
-        Return the best image object to use as cover (Product.image first, else primary, else first gallery).
-        """
+
         if self.image:
             return self.image
         primary = self.images.filter(is_primary=True).first()
@@ -155,7 +153,6 @@ class Product(models.Model):
         except Exception:
             return ""
 
-    # ---- URLs & repr
     def get_absolute_url(self):
         return reverse("product_detail", args=[self.slug])
 
@@ -193,7 +190,6 @@ class ProductImage(models.Model):
             )
         ]
 
-    # ✅ these methods must be at the same indent level as Meta (i.e., model methods)
     def clean(self):
         self.alt_text = self.alt_text.strip()
         # Skip the query when the parent product isn't saved yet
@@ -210,15 +206,44 @@ class ProductImage(models.Model):
         return f"{self.product.name} image #{self.pk or 'new'}"
 
 
-# ---------- Orders
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    phone_number = models.CharField(max_length=20)
+
+    def __str__(self):
+        return f"Profile of {self.user.username}"
+
+
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
+
+    # customer info
     full_name = models.CharField(max_length=150)
     address = models.CharField(max_length=255)
     city = models.CharField(max_length=100)
     country = models.CharField(max_length=100)
     email = models.EmailField()
+
+    # NEW: payment upload
+    payment_screenshot = models.ImageField(
+        upload_to="payments/",
+        null=True,
+        blank=True
+    )
+
+    # NEW: payment status
+    PAYMENT_STATUS = [
+        ("pending", "Pending Verification"),
+        ("verified", "Verified"),
+        ("rejected", "Rejected"),
+    ]
+    status = models.CharField(
+        max_length=20,
+        choices=PAYMENT_STATUS,
+        default="pending"
+    )
 
     class Meta:
         ordering = ["-created_at"]
@@ -232,7 +257,6 @@ class Order(models.Model):
 
     def __str__(self):
         return f"Order #{self.pk}"
-
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
@@ -257,3 +281,4 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"{self.quantity} × {self.product.name}"
+

@@ -91,9 +91,10 @@
                     <form method="post" action="{% url 'checkout' %} " class="mt-3 d-grid gap-2">
                         {% csrf_token %}
                         <input type="hidden" name="selected_items" id="selected-items">
-                        <button type="submit" class="btn btn-primary btn-lg rounded-pill">
+                        <button type="submit" id="checkout-btn" class="btn btn-primary btn-lg rounded-pill">
                             <i class="bi bi-lock"></i> Checkout
                         </button>
+
 
                     </form>
                     <a href="{% url 'home' %}" class="btn btn-outline-secondary w-100 rounded-pill mt-2">Continue
@@ -120,7 +121,6 @@
 
 </footer>
 
-<!-- Scripts -->
 <script>
     const checkboxes = document.querySelectorAll('.item-checkbox');
     const selectAll = document.getElementById('select-all');
@@ -130,6 +130,7 @@
     const checkoutBtn = document.getElementById('checkout-btn');
     const selectedItemsEl = document.getElementById('selected-items');
     const shipping = 2.5;
+
 
     function updateSummary() {
         let subtotal = 0;
@@ -148,10 +149,10 @@
         subtotalEl.innerText = `$${subtotal.toFixed(2)}`;
         totalEl.innerText = `$${(count ? subtotal + shipping : 0).toFixed(2)}`;
         countEl.innerText = `${count} item${count !== 1 ? 's' : ''} selected`;
-        checkoutBtn.disabled = count === 0;
-        checkoutBtn.innerText = `Proceed to Checkout (${count})`;
-        selectedItemsEl.value = selected.join(',');
+
+        document.getElementById("selected-items").value = JSON.stringify(selected);
     }
+
 
     checkboxes.forEach(cb => cb.addEventListener('change', updateSummary));
     selectAll?.addEventListener('change', () => {

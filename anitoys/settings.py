@@ -20,7 +20,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "store",
+    'store.apps.StoreConfig',
+    "widget_tweaks",
 ]
 
 MIDDLEWARE = [
@@ -93,7 +94,8 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"  # uploaded product images
 
 # --- redirects after login/logout ---
-LOGIN_REDIRECT_URL = "/"
-LOGOUT_REDIRECT_URL = "home"
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

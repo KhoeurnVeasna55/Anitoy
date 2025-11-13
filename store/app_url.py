@@ -1,6 +1,9 @@
 # store/urls.py
+from django.contrib.auth.decorators import login_required
 from django.urls import path
 from django.contrib.auth import views as auth_views
+
+from .form import SignUpForm
 from .my_views import (
     home,
     product_detail,
@@ -10,28 +13,37 @@ from .my_views import (
     inc_qty,
     dec_qty,
     checkout,
-    register,
+    register_view,
+    login_view,
+    logout_view,
 )
+from .my_views.checkout import payment_page
+
 from .my_views.views_product_list import product_list
+from .my_views.pload_payment import upload_payment
 
 urlpatterns = [
     path("", home, name="home"),
 
+    # Cart
     path("cart/", view_cart, name="view_cart"),
     path("cart/add/<slug:slug>/", add_to_cart, name="add_to_cart"),
     path("cart/remove/<int:pid>/", remove_from_cart, name="remove_from_cart"),
     path("cart/inc/<int:pid>/", inc_qty, name="inc_qty"),
     path("cart/dec/<int:pid>/", dec_qty, name="dec_qty"),
 
+    # Catalog / Products
     path("catalog/", home, name="catalog"),
-    path("checkout/", checkout, name="checkout"),
-
-    # ✅ This now works!
     path("products/", product_list, name="product_list"),
-
-    path("login/", auth_views.LoginView.as_view(template_name="auth/login.html"), name="login"),
-    path("logout/", auth_views.LogoutView.as_view(), name="logout"),
-    path("register/", register, name="register"),
-
     path("product/<slug:slug>/", product_detail, name="product_detail"),
+
+    # Checkout
+    path("checkout/", checkout, name="checkout"),
+    path("payment/<int:order_id>/", payment_page, name="payment_page"),
+    path("upload-payment/<int:order_id>/", upload_payment, name="upload_payment"),
+
+    # Auth
+    path("login/", login_view, name="login"),
+    path("register/", register_view, name="register"),
+    path("logout/", auth_views.LogoutView.as_view(), name="logout"),
 ]
