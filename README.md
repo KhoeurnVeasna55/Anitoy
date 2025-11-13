@@ -6,8 +6,8 @@ A simple and clean Django e-commerce website for browsing, searching, and purcha
 
 👨‍🏫 Instructor
 
-ជឿន ពិនឆៃ
-Course: E-Commmerce / Midterm Project
+- Name: Choeurn Pinchhai
+- Subject: E-Commmerce / Midterm Project
 
 ---
 
@@ -46,6 +46,7 @@ Course: E-Commmerce / Midterm Project
 - **Pillow** (image handling)
 
 ---
+
 
 
 
