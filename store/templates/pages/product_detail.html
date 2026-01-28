@@ -1,21 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
- // new update telegramm and fackbook
-{% block title %}
-{{ product.name }} – {{ product.category.name }} • Anitoys
-{% endblock %}
+{# new update telegram and facebook #}
 
-{% block og_title %}
-{{ product.name }}
-{% endblock %}
+{% block title %}{{ product.name }} – {{ product.category.name }} • Anitoys{% endblock %}
 
-{% block og_description %}
-{% if product.description %}
-{{ product.description|truncatewords:30 }}
-{% else %}
-Buy {{ product.name }} from {{ product.category.name }} at Anitoys.
-{% endif %}
-{% endblock %}
+{% block og_title %}{{ product.name }}{% endblock %}
+
+{% block og_description %}{% if product.description %}{{ product.description|striptags|truncatewords:30 }}{% else %}Buy {{ product.name }} from {{ product.category.name }} at Anitoys.{% endif %}{% endblock %}
 
 {% block og_image %}
 {% with img=product.cover_url|default:product.get_primary_image_url %}
