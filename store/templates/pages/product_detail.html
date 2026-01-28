@@ -7,6 +7,33 @@
 
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'css/pages/product_detail.css' %}?v=3">
+
+{% with page_url=request.build_absolute_uri %}
+{% with host=request.scheme|add:"://"|add:request.get_host %}
+{% with img_path=product.cover_url|default:product.get_primary_image_url %}
+
+{% if img_path %}
+  {# If already absolute url, keep it. If relative, prepend host #}
+  {% if img_path|slice:":4" == "http" %}
+    {% with img_url=img_path %}
+      {% include "partials/_meta_product.html" %}
+    {% endwith %}
+  {% else %}
+    {% with img_url=host|add:img_path %}
+      {% include "partials/_meta_product.html" %}
+    {% endwith %}
+  {% endif %}
+{% else %}
+  {% static 'img/placeholder-600x480.jpg' as fallback_img %}
+  {% with img_url=host|add:fallback_img %}
+    {% include "partials/_meta_product.html" %}
+  {% endwith %}
+{% endif %}
+
+{% endwith %}
+{% endwith %}
+{% endwith %}
+
 {% endblock %}
 
 {% block content %}

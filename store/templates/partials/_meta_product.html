@@ -1,0 +1,15 @@
+<link rel="canonical" href="{{ page_url }}"/>
+
+<!-- Open Graph -->
+<meta property="og:type" content="product"/>
+<meta property="og:site_name" content="Anitoys"/>
+<meta property="og:title" content="{{ product.name }}"/>
+<meta property="og:description" content="{{ product.description|default:'Shop now on Anitoys'|striptags|truncatechars:160 }}"/>
+<meta property="og:url" content="{{ page_url }}"/>
+<meta property="og:image" content="{{ img_url }}"/>
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="{{ product.name }}"/>
+<meta name="twitter:description" content="{{ product.description|default:'Shop now on Anitoys'|striptags|truncatechars:160 }}"/>
+<meta name="twitter:image" content="{{ img_url }}"/>

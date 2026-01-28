@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 {% load static %}
-{% load widget_tweaks %}
 
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Payment Verification • Anitoys</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8"/>
+    <title>Pay with KHQR • Anitoys</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
@@ -22,30 +21,97 @@
         }
 
         .payment-box {
-            max-width: 600px;
+            max-width: 640px;
             margin: 4rem auto;
             background: white;
             padding: 2.5rem;
             border-radius: 20px;
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 10px 35px rgba(0, 0, 0, .08);
         }
 
         .title {
-            font-weight: 700;
+            font-weight: 800;
             color: var(--primary);
+            letter-spacing: .2px;
         }
 
-        .qr-box img {
-            width: 260px;
-            border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(108, 92, 231, 0.2);
+        .sub {
+            color: #64748b;
+            margin-top: .35rem;
+        }
+
+        .qr-wrap {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            padding: 18px;
+        }
+
+        .qr-img {
+            width: 280px;
+            height: 280px;
+            object-fit: contain;
+            border-radius: 14px;
+            box-shadow: 0 5px 20px rgba(108, 92, 231, 0.18);
+            background: white;
+        }
+
+        .meta {
+            text-align: left;
+            background: #ffffff;
+            border: 1px solid #eef2ff;
+            border-radius: 14px;
+            padding: 14px 16px;
+        }
+
+        .meta .label {
+            color: #64748b;
+            font-size: .9rem;
+        }
+
+        .meta .value {
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            border-radius: 999px;
+            padding: 10px 14px;
+            font-size: .95rem;
+            background: #fff7ed;
+            color: #9a3412;
+            border: 1px solid #fed7aa;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #f59e0b;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, .15);
+        }
+
+        .status-success {
+            background: #ecfdf5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        .status-success .dot {
+            background: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, .15);
         }
 
         .btn-primary {
             background: var(--primary);
             border-color: var(--primary);
-            font-weight: 600;
-            border-radius: 10px;
+            font-weight: 700;
+            border-radius: 12px;
+            padding: .8rem 1rem;
         }
 
         .btn-primary:hover {
@@ -53,51 +119,168 @@
         }
 
         .btn-outline-secondary {
-            border-radius: 10px;
+            border-radius: 12px;
+            padding: .8rem 1rem;
+            font-weight: 700;
         }
 
-        .info-text {
-            font-size: 0.95rem;
+        .hint {
             color: #64748b;
-            margin-top: .4rem;
+            font-size: .92rem;
+            margin-top: .35rem;
+        }
+
+        .small-muted {
+            color: #94a3b8;
+            font-size: .85rem;
+        }
+
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 3px solid rgba(0, 0, 0, .08);
+            border-top-color: rgba(0, 0, 0, .35);
+            border-radius: 50%;
+            animation: spin 0.9s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        pre.payload {
+            display: none; /* hide raw KHQR string (enable if you want debug) */
+            white-space: pre-wrap;
+            background: #0b1020;
+            color: #e5e7eb;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: .85rem;
         }
     </style>
 </head>
 
 <body>
 
-<div class="payment-box text-center">
+<div class="payment-box">
 
-    <h2 class="title mb-2">Scan & Pay</h2>
-    <p class="text-muted mb-4">After paying, upload your payment receipt.</p>
-
-    <!-- QR Image -->
-    <div class="qr-box mb-4">
-        <img src="{% static 'img/QRveas.jpg' %}" alt="Payment QR">
+    <div class="text-center mb-4">
+        <h2 class="title mb-1">Scan & Pay with KHQR</h2>
+        <p class="sub mb-0">Please scan the QR code using Bakong / Bank App. This page will auto-check your payment.</p>
     </div>
 
-    <!-- Messages -->
     {% if messages %}
     {% for message in messages %}
     <div class="alert alert-{{ message.tags }}">{{ message }}</div>
     {% endfor %}
     {% endif %}
 
-    <!-- Upload Form -->
-    <form action="{% url 'upload_payment' order.id %}" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
+  <div class="qr-wrap text-center mb-4">
 
-        <label class="form-label fw-semibold">Upload Payment Receipt</label>
-        {{ upload_form.payment_screenshot|add_class:"form-control" }}
+  {% if order.khqr_qr %}
+    <div class="d-flex justify-content-center">
+      <img class="qr-img" src="{% url 'khqr_qr_image' order.id %}" alt="KHQR QR">
+    </div>
 
-        <p class="info-text">Accepted: JPG, PNG • Max 5 MB</p>
+    {# Debug only (optional). Remove later. #}
+    {# <pre class="payload mt-3">{{ order.khqr_qr }}</pre> #}
 
-        <button class="btn btn-primary w-100 mt-3">Submit Payment</button>
-    </form>
+  {% else %}
+    <div class="text-center text-danger fw-semibold">
+      KHQR not generated yet. Please refresh this page.
+    </div>
+  {% endif %}
 
-    <a href="{% url 'home' %}" class="btn btn-outline-secondary w-100 mt-4">Back to Home</a>
+  <div class="mt-3 d-flex justify-content-center">
+    <span id="payStatus" class="status-pill">
+      <span class="dot"></span>
+      <span id="payText">Waiting for payment...</span>
+      <span id="paySpin" class="spinner ms-2"></span>
+    </span>
+  </div>
+
+  <div class="hint">
+    Don’t close this page until it shows <b>Payment Successful</b>.
+  </div>
+  <div class="small-muted mt-1">
+    We auto-check every 3 seconds.
+  </div>
 
 </div>
+
+    <div class="meta mb-4">
+        <div class="row g-2">
+            <div class="col-6">
+                <div class="label">Order ID</div>
+                <div class="value">#{{ order.id }}</div>
+            </div>
+            <div class="col-6 text-end">
+                <div class="label">Amount</div>
+                <div class="value">${{ order.total_amount|floatformat:2 }}</div>
+            </div>
+            <div class="col-12">
+                <div class="label">Customer</div>
+                <div class="value">{{ order.full_name }} • {{ order.phone }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-grid gap-2">
+        <a href="{% url 'home' %}" class="btn btn-outline-secondary">Back to Home</a>
+    </div>
+
+</div>
+
+<script>
+    const checkUrl = "{% url 'check_payment' order.id %}";
+    const successUrl = "{% url 'payment_success' order.id %}";
+
+    const pill = document.getElementById("payStatus");
+    const text = document.getElementById("payText");
+    const spin = document.getElementById("paySpin");
+
+    let tries = 0;
+
+    async function poll() {
+        tries += 1;
+
+        try {
+            const res = await fetch(checkUrl, {cache: "no-store"});
+            const data = await res.json();
+
+            if (data.status === "PAID") {
+                pill.classList.add("status-success");
+                text.innerText = "Payment Successful ✅ Redirecting...";
+                spin.style.display = "none";
+
+                setTimeout(() => {
+                    window.location.href = successUrl;
+                }, 800);
+                return;
+            }
+
+            // pending
+            text.innerText = "Waiting for payment...";
+            spin.style.display = "";
+
+        } catch (e) {
+            // keep polling
+            text.innerText = "Checking payment...";
+            spin.style.display = "";
+        }
+
+        // after many tries, show a softer message but continue polling
+        if (tries === 20) {
+            text.innerText = "Still waiting... please confirm payment in your bank app.";
+        }
+
+        setTimeout(poll, 3000);
+    }
+
+    poll();
+</script>
 
 </body>
 </html>

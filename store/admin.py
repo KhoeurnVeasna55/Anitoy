@@ -3,7 +3,8 @@ from django.forms import BaseInlineFormSet
 from django.utils.html import format_html
 
 from .models import Category, Product, Order, OrderItem, ProductImage
-
+from .services.bakong import check_transaction_by_md5
+from .services.telegram_notify import send_paid_order_telegram
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -17,7 +18,7 @@ class ProductImageInlineFormSet(BaseInlineFormSet):
         super().clean()
         primaries = 0
         for form in self.forms:
-            if not hasattr(form, "cleaned_data"):
+            if not getattr(form, "cleaned_data", None):
                 continue
             if form.cleaned_data.get("DELETE"):
                 continue
@@ -51,6 +52,7 @@ class OrderItemInline(admin.TabularInline):
     model = OrderItem
     extra = 0
     autocomplete_fields = ("product",)
+    fields = ("product", "quantity", "unit_price")
 
 
 @admin.register(Order)
@@ -58,20 +60,30 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "full_name",
-        "email",
-        "status",
-        "payment_preview",
-        "total_amount",
+        "phone",
+        "payment_status",
+        "paid_at",
+        "telegram_paid_notified",
+        "khqr_preview",
+        "total_amount_display",
         "created_at",
     )
-    list_filter = ("status", "created_at")
-    search_fields = ("full_name", "email")
-
-    readonly_fields = ("created_at", "total_amount", "payment_preview")
+    list_filter = ("payment_status", "telegram_paid_notified", "status", "created_at")
+    search_fields = ("id", "full_name", "email", "phone", "khqr_md5")
+    readonly_fields = (
+        "created_at",
+        "paid_at",
+        "khqr_preview",
+        "khqr_md5",
+        "khqr_qr",
+        "total_amount_display",
+        "telegram_paid_notified",
+        "payment_status",
+    )
 
     inlines = (OrderItemInline,)
 
-    actions = ["mark_verified", "mark_rejected"]
+    actions = ["mark_verified", "mark_rejected", "force_mark_paid", "resend_paid_telegram"]
 
     def mark_verified(self, request, queryset):
         updated = queryset.update(status="verified")
@@ -84,13 +96,58 @@ class OrderAdmin(admin.ModelAdmin):
     mark_verified.short_description = "Mark selected orders as Verified"
     mark_rejected.short_description = "Mark selected orders as Rejected"
 
-    def payment_preview(self, obj):
-        if obj.payment_screenshot:
+    @admin.display(description="Total ($)")
+    def total_amount_display(self, obj: Order):
+        # works if total_amount is @property or method
+        total = obj.total_amount if not callable(getattr(obj, "total_amount", None)) else obj.total_amount()
+        try:
+            return f"{float(total):.2f}"
+        except Exception:
+            return total
+
+    @admin.display(description="KHQR QR")
+    def khqr_preview(self, obj: Order):
+
+        if not obj.khqr_qr:
+            return "—"
+
+        # This URL must exist in your urls.py:
+        # path("khqr/<int:order_id>/qr.png", khqr_qr_image, name="khqr_qr_image")
+        try:
+            url = f"/khqr/{obj.id}/qr.png"
             return format_html(
                 '<a href="{}" target="_blank">'
-                '<img src="{}" style="height:70px; border-radius:6px; border:1px solid #ddd;">'
+                '<img src="{}" style="height:80px;width:80px;border-radius:10px;border:1px solid #ddd;object-fit:contain;background:#fff;" />'
                 "</a>",
-                obj.payment_screenshot.url,
-                obj.payment_screenshot.url,
+                url,
+                url,
             )
-        return "No screenshot"
+        except Exception:
+            return "QR"
+
+    def force_mark_paid(self, request, queryset):
+        """
+        Manual admin action if needed (for rare cases).
+        """
+        from django.utils import timezone
+        updated = queryset.exclude(payment_status="PAID").update(payment_status="PAID", paid_at=timezone.now())
+        self.message_user(request, f"{updated} order(s) set to PAID.")
+
+    force_mark_paid.short_description = "Force mark as PAID (manual)"
+
+    def resend_paid_telegram(self, request, queryset):
+        from store.services.telegram_notify import send_paid_order_telegram
+
+        sent = 0
+        for order in queryset:
+            if order.payment_status != "PAID":
+                continue
+
+            order.telegram_paid_notified = False
+            order.save(update_fields=["telegram_paid_notified"])
+
+            send_paid_order_telegram(order)
+            sent += 1
+
+        self.message_user(request, f"Telegram resent for {sent} paid order(s).")
+

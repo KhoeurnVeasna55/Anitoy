@@ -1,6 +1,7 @@
 from pathlib import Path
 import environ
 
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # --- env ---
@@ -11,6 +12,13 @@ environ.Env.read_env(BASE_DIR / ".env")
 SECRET_KEY = env("SECRET_KEY")
 DEBUG = env("DEBUG")
 ALLOWED_HOSTS = env("ALLOWED_HOSTS").split(",")
+
+TELEGRAM_BOT_TOKEN = env("TELEGRAM_BOT_TOKEN", default="")
+TELEGRAM_CHAT_ID = env("TELEGRAM_CHAT_ID", default="")
+
+BAKONG_BASE_URL = env("BAKONG_BASE_URL", default="https://api-bakong.nbc.gov.kh")
+BAKONG_API_TOKEN = env("BAKONG_API_TOKEN", default="")
+
 
 # --- apps ---
 INSTALLED_APPS = [

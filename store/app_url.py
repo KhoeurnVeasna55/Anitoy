@@ -21,6 +21,10 @@ from .my_views.checkout import payment_page
 
 from .my_views.views_product_list import product_list
 from .my_views.pload_payment import upload_payment
+from .my_views.khqr_qr_image import khqr_qr_image
+from .my_views.payment_check import check_payment
+from .my_views.payment_success import payment_success
+
 
 urlpatterns = [
     path("", home, name="home"),
@@ -40,7 +44,9 @@ urlpatterns = [
     # Checkout
     path("checkout/", checkout, name="checkout"),
     path("payment/<int:order_id>/", payment_page, name="payment_page"),
-    path("upload-payment/<int:order_id>/", upload_payment, name="upload_payment"),
+    path("payment/<int:order_id>/qr.png", khqr_qr_image, name="khqr_qr_image"),
+    path("payment/check/<int:order_id>/", check_payment, name="check_payment"),
+    path("payment/success/<int:order_id>/", payment_success, name="payment_success"),
 
     # Auth
     path("login/", login_view, name="login"),

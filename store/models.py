@@ -216,42 +216,51 @@ class Profile(models.Model):
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-
     created_at = models.DateTimeField(auto_now_add=True)
 
-    # customer info
     full_name = models.CharField(max_length=150)
+    phone = models.CharField(max_length=20, default="-")  # ✅ default for old rows
     address = models.CharField(max_length=255)
     city = models.CharField(max_length=100)
     country = models.CharField(max_length=100)
     email = models.EmailField()
 
-    # NEW: payment upload
-    payment_screenshot = models.ImageField(
-        upload_to="payments/",
-        null=True,
-        blank=True
-    )
+    payment_screenshot = models.ImageField(upload_to="payments/", null=True, blank=True)
 
-    # NEW: payment status
-    PAYMENT_STATUS = [
+    # KHQR fields ---
+    khqr_qr = models.TextField(blank=True, null=True)
+    khqr_md5 = models.CharField(max_length=64, blank=True, null=True)
+    telegram_paid_notified = models.BooleanField(default=False)
+
+    # payment status for auto-check
+    payment_status = models.CharField(
+        max_length=20,
+        default="PENDING",
+        choices=[
+            ("PENDING", "Pending"),
+            ("PAID", "Paid"),
+            ("FAILED", "Failed"),
+        ],
+    )
+    paid_at = models.DateTimeField(blank=True, null=True)
+
+    # verifi status
+    VERIFY_STATUS = [
         ("pending", "Pending Verification"),
         ("verified", "Verified"),
         ("rejected", "Rejected"),
     ]
-    status = models.CharField(
-        max_length=20,
-        choices=PAYMENT_STATUS,
-        default="pending"
-    )
+    status = models.CharField(max_length=20, choices=VERIFY_STATUS, default="pending")
 
     class Meta:
         ordering = ["-created_at"]
         indexes = [
             models.Index(fields=["-created_at"]),
             models.Index(fields=["email"]),
+            models.Index(fields=["payment_status"]),
         ]
 
+    @property
     def total_amount(self):
         return sum(item.subtotal() for item in self.items.all())
 
