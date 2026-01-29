@@ -4,6 +4,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Order
+from django.contrib.auth.forms import AuthenticationForm
 
 
 class CheckoutForm(forms.Form):
@@ -43,6 +44,26 @@ class SignUpForm(UserCreationForm):
         model = User
         fields = ['username', 'email', 'password1', 'password2', ]
 
+class EmailAuthenticationForm(AuthenticationForm):
+    username = forms.EmailField(
+        label="Email",
+        widget=forms.EmailInput(attrs={
+            "class": "form-control",
+            "placeholder": "you@example.com",
+            "autocomplete": "email",
+            "autofocus": "autofocus",
+        })
+    )
+
+    password = forms.CharField(
+        label="Password",
+        strip=False,
+        widget=forms.PasswordInput(attrs={
+            "class": "form-control",
+            "id": "password_field",
+            "autocomplete": "current-password",
+        })
+    )
 
 class UploadPaymentForm(forms.ModelForm):
     class Meta:

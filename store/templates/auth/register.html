@@ -3,114 +3,341 @@
 {% load widget_tweaks %}
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Sign Up • Anitoys</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign Up • Anitoys</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
-    <style>
-        :root {
-            --primary: #6C5CE7;
-        }
+  <style>
+    :root{
+      --primary:#6C5CE7;
+      --primary-2:#8E7CFF;
+      --text:#111827;
+      --muted:#6b7280;
+      --card:#ffffff;
+      --ring: rgba(108, 92, 231, .22);
+    }
 
-        body {
-            background: #FFFFFF;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-        }
+    body{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:
+        radial-gradient(900px 500px at 15% 25%, rgba(108,92,231,.18), transparent 60%),
+        radial-gradient(900px 500px at 85% 75%, rgba(142,124,255,.18), transparent 60%),
+        linear-gradient(135deg, #f8fafc, #ffffff);
+      color:var(--text);
+    }
 
-        .auth-box {
-            max-width: 480px;
-            margin: auto;
-            padding: 2.5rem;
-            background: white;
-            border-radius: 1rem;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, .15);
-            animation: fadeIn .5s ease;
-        }
+    .auth-wrap{
+      width:100%;
+      max-width:980px;
+      padding: 24px;
+    }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    .auth-card{
+      background: var(--card);
+      border-radius: 20px;
+      box-shadow:
+        0 20px 60px rgba(17,24,39,.14),
+        0 2px 10px rgba(17,24,39,.06);
+      overflow:hidden;
+      animation: pop .35s ease;
+    }
 
-        .btn-primary {
-            background-color: var(--primary);
-            border-color: var(--primary);
-        }
+    @keyframes pop {
+      from { opacity:0; transform: translateY(14px) scale(.98); }
+      to   { opacity:1; transform: translateY(0) scale(1); }
+    }
 
-        .btn-primary:hover {
-            background-color: #5947d6;
-            border-color: #5947d6;
-        }
+    .auth-left{
+      padding: 44px 42px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: #fff;
+      position: relative;
+      min-height: 100%;
+    }
 
-        a {
-            color: var(--primary);
-            font-weight: 600;
-        }
+    .auth-left::after{
+      content:"";
+      position:absolute;
+      inset:-40px;
+      background:
+        radial-gradient(260px 260px at 20% 20%, rgba(255,255,255,.18), transparent 60%),
+        radial-gradient(260px 260px at 80% 80%, rgba(255,255,255,.12), transparent 60%);
+      pointer-events:none;
+    }
 
-        a:hover {
-            color: #4b3cc9;
-        }
-    </style>
+    .brand{
+      position:relative;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:800;
+      letter-spacing:.2px;
+      margin-bottom: 18px;
+    }
+
+    .brand-badge{
+      width:38px; height:38px;
+      border-radius:12px;
+      display:grid;
+      place-items:center;
+      background: rgba(255,255,255,.18);
+      border:1px solid rgba(255,255,255,.28);
+      backdrop-filter: blur(6px);
+      font-weight:900;
+    }
+
+    .auth-right{
+      padding: 44px 42px;
+      background:#fff;
+    }
+
+    .title{
+      font-weight: 800;
+      font-size: 28px;
+      margin: 0 0 6px 0;
+    }
+
+    .subtitle{
+      color: var(--muted);
+      margin-bottom: 22px;
+    }
+
+    .form-label{
+      font-weight: 700;
+      color:#374151;
+      margin-bottom:6px;
+    }
+
+    .form-control, .input-group-text{
+      border-radius: 14px !important;
+    }
+
+    .form-control{
+      padding: .9rem 1rem;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      transition: box-shadow .2s, border-color .2s;
+    }
+
+    .form-control:focus{
+      border-color: var(--primary);
+      box-shadow: 0 0 0 .25rem var(--ring);
+    }
+
+    .input-group-text{
+      background:#f9fafb;
+      border: 1px solid #e5e7eb;
+      color:#6b7280;
+      padding: .9rem 1rem;
+      min-width: 48px; /* Added for icon consistency */
+      justify-content: center;
+    }
+
+    .btn-primary{
+      background: var(--primary);
+      border-color: var(--primary);
+      border-radius: 14px;
+      padding: .95rem 1rem;
+      font-weight: 800;
+      letter-spacing:.2px;
+      box-shadow: 0 14px 28px rgba(108,92,231,.25);
+      transition: transform .08s ease, filter .2s;
+    }
+
+    .btn-primary:hover{ filter: brightness(.96); }
+    .btn-primary:active{ transform: translateY(1px); }
+
+    a{
+      color: var(--primary);
+      font-weight: 800;
+      text-decoration: none;
+    }
+    a:hover{ text-decoration: underline; }
+
+    .help{
+      color: var(--muted);
+      font-size: .92rem;
+    }
+
+    .alert{
+      border-radius: 14px;
+    }
+
+    .field-error{
+      margin-top: 6px;
+      color: #b42318;
+      font-size: .92rem;
+      font-weight: 600;
+    }
+
+    .divider{
+      height:1px;
+      background:#eef2f7;
+      margin: 18px 0;
+    }
+
+    /* Small screens */
+    @media (max-width: 991px){
+      .auth-left{ padding: 34px 28px; }
+      .auth-right{ padding: 34px 28px; }
+    }
+  </style>
 </head>
 
 <body>
-<div class="auth-box">
-    <h3 class="text-center mb-4 fw-bold" style="color: var(--primary);">
-        Create Your Account
-    </h3>
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="row g-0">
+        <div class="col-lg-5">
+          <div class="auth-left h-100">
+            <div class="brand">
+              <div class="brand-badge">A</div>
+              <div>
+                <div style="font-size:18px; line-height:1;">Anitoys</div>
+                <div style="opacity:.85; font-weight:600; font-size:13px;">Anime collectibles in Cambodia</div>
+              </div>
+            </div>
 
-    {% if messages %}
-    {% for message in messages %}
-    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-    {% endfor %}
-    {% endif %}
+            <h2 class="mt-3 mb-2" style="position:relative; font-weight:900;">
+              Join the collection ✨
+            </h2>
+            <p class="mb-0" style="position:relative; opacity:.9;">
+              Create an account to save favorites, track orders, and get updates on new drops.
+            </p>
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.non_field_errors }}
+            <div class="divider" style="position:relative; background:rgba(255,255,255,.25);"></div>
 
-        <div class="mb-3">
-            <label class="form-label">Username</label>
-            {{ form.username|add_class:"form-control form-control-lg" }}
+            <ul class="mb-0" style="position:relative; padding-left: 18px; opacity:.95;">
+              <li>Fast checkout</li>
+              <li>Order tracking</li>
+              <li>Exclusive deals</li>
+            </ul>
+          </div>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">Email</label>
-            {{ form.email|add_class:"form-control form-control-lg" }}
+        <div class="col-lg-7">
+          <div class="auth-right">
+            <h1 class="title">Create your account</h1>
+            <div class="subtitle">It only takes a minute.</div>
+
+            {% if messages %}
+              {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+              {% endfor %}
+            {% endif %}
+
+            {% if form.non_field_errors %}
+              <div class="alert alert-danger">
+                {{ form.non_field_errors }}
+              </div>
+            {% endif %}
+
+            <form method="post" novalidate>
+              {% csrf_token %}
+
+              <div class="mb-3">
+                <label class="form-label">Username</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-person"></i></span>
+                  {{ form.username|add_class:"form-control" }}
+                </div>
+                {% if form.username.errors %}
+                  <div class="field-error">{{ form.username.errors|striptags }}</div>
+                {% endif %}
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Email</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                  {{ form.email|add_class:"form-control" }}
+                </div>
+                {% if form.email.errors %}
+                  <div class="field-error">{{ form.email.errors|striptags }}</div>
+                {% endif %}
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Phone Number</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-phone"></i></span>
+                  {{ form.phoneNumber|add_class:"form-control" }}
+                </div>
+                {% if form.phoneNumber.errors %}
+                  <div class="field-error">{{ form.phoneNumber.errors|striptags }}</div>
+                {% endif %}
+                <div class="help mt-1">Use a valid Cambodian number (e.g. 0xx xxx xxx).</div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Password</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                  {{ form.password1|add_class:"form-control"|attr:"id:password1" }}
+                  <button class="btn btn-outline-secondary" type="button" id="togglePass1" style="border-radius: 14px; border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important;">
+                    <i class="bi bi-eye" id="eyeIcon1"></i>
+                  </button>
+                </div>
+                {% if form.password1.errors %}
+                  <div class="field-error">{{ form.password1.errors|striptags }}</div>
+                {% endif %}
+              </div>
+
+              <div class="mb-2">
+                <label class="form-label">Confirm Password</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-shield-check"></i></span>
+                  {{ form.password2|add_class:"form-control"|attr:"id:password2" }}
+                  <button class="btn btn-outline-secondary" type="button" id="togglePass2" style="border-radius: 14px; border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important;">
+                    <i class="bi bi-eye" id="eyeIcon2"></i>
+                  </button>
+                </div>
+                {% if form.password2.errors %}
+                  <div class="field-error">{{ form.password2.errors|striptags }}</div>
+                {% endif %}
+              </div>
+
+              <div class="d-grid mt-4">
+                <button type="submit" class="btn btn-primary">
+                  Sign Up
+                </button>
+              </div>
+            </form>
+
+            <div class="mt-4 text-center help">
+              Already have an account?
+              <a href="{% url 'login' %}">Sign In</a>
+            </div>
+          </div>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">Phone Number</label>
-            {{ form.phoneNumber|add_class:"form-control form-control-lg" }}
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Password</label>
-            {{ form.password1|add_class:"form-control form-control-lg" }}
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Confirm Password</label>
-            {{ form.password2|add_class:"form-control form-control-lg" }}
-        </div>
-
-        <div class="d-grid mt-4">
-            <button type="submit" class="btn btn-primary btn-lg">Sign Up</button>
-        </div>
-    </form>
-
-    <div class="mt-4 text-center">
-        <small>Already have an account? <a href="{% url 'login' %}">Sign In</a></small>
+      </div>
     </div>
-</div>
+  </div>
+
+  <script>
+    function setupToggle(pId, tId, iId) {
+      const p = document.getElementById(pId);
+      const t = document.getElementById(tId);
+      const i = document.getElementById(iId);
+
+      if(!p || !t) return;
+
+      t.addEventListener("click", () => {
+        const isPassword = p.type === "password";
+        p.type = isPassword ? "text" : "password";
+        i.className = isPassword ? "bi bi-eye-slash" : "bi bi-eye";
+      });
+    }
+
+    setupToggle("password1", "togglePass1", "eyeIcon1");
+    setupToggle("password2", "togglePass2", "eyeIcon2");
+  </script>
 </body>
 </html>

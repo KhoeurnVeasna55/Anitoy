@@ -1,6 +1,7 @@
 # shop/context_processors.py
 from decimal import Decimal
 from .models import Category
+from django.conf import settings
 
 
 def cart_summary(request):
@@ -24,3 +25,6 @@ def global_shop(request):
     return {
         "categories": Category.objects.order_by("name"),
     }
+
+def site_url(request):
+    return {"SITE_URL": getattr(settings, "SITE_URL", "").rstrip("/")}

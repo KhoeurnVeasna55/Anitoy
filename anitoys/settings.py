@@ -1,5 +1,8 @@
 from pathlib import Path
 import environ
+import os
+
+SITE_URL = os.getenv("SITE_URL", "").rstrip("/")
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -50,6 +53,7 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         # Point to your app templates folder
         "DIRS": [BASE_DIR / "store" / "templates"],
+
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -87,6 +91,11 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
+AUTHENTICATION_BACKENDS = [
+    "store.backends.EmailBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+
 
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
@@ -95,8 +104,13 @@ USE_TZ = True
 
 # --- static & media ---
 TEMPLATES[0]["DIRS"] = [BASE_DIR / "store" / "templates"]
+TEMPLATES[0]["OPTIONS"]["context_processors"] += [
+    "store.context_processors.site_url",
+]
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "store" / "static"]  # your Bootstrap theme files
+SITE_URL = os.getenv("SITE_URL", "").rstrip("/")
+
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"  # uploaded product images

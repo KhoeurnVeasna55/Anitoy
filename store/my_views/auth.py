@@ -4,6 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from store.form import SignUpForm
 from django.contrib.messages import get_messages
+from store.form import SignUpForm, EmailAuthenticationForm
 
 
 
@@ -27,18 +28,17 @@ def login_view(request):
         messages.info(request, "Please sign in to continue.")
 
     if request.method == "POST":
-        form = AuthenticationForm(request, data=request.POST)
+        form = EmailAuthenticationForm(request, data=request.POST)
         if form.is_valid():
             user = form.get_user()
             login(request, user)
             return redirect('home')
         else:
-            messages.error(request, "Invalid username or password.")
+            messages.error(request, "Invalid email or password.")
     else:
-        form = AuthenticationForm()
+        form = EmailAuthenticationForm(request)
 
     return render(request, 'auth/login.html', {'form': form})
-
 
 def logout_view(request):
     logout(request)

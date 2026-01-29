@@ -1,26 +1,38 @@
 {% extends "base.html" %}
 {% load static %}
-{# new update telegram and facebook #}
 
 {% block title %}{{ product.name }} – {{ product.category.name }} • Anitoys{% endblock %}
 
+{% block og_type %}product{% endblock %}
 {% block og_title %}{{ product.name }}{% endblock %}
 
-{% block og_description %}{% if product.description %}{{ product.description|striptags|truncatewords:30 }}{% else %}Buy {{ product.name }} from {{ product.category.name }} at Anitoys.{% endif %}{% endblock %}
+{% block og_description %}
+{% if product.description %}
+{{ product.description|striptags|truncatewords:30 }}
+{% else %}
+Buy {{ product.name }} from {{ product.category.name }} at Anitoys.
+{% endif %}
+{% endblock %}
+
+{% block og_url %}{{ SITE_URL }}{{ request.path }}{% endblock %}
 
 {% block og_image %}
 {% with img=product.cover_url|default:product.get_primary_image_url %}
 {% if img %}
-  {% if img|slice:":4" == "http" %}
-    {{ img }}
-  {% else %}
-    {{ request.scheme }}://{{ request.get_host }}{{ img }}
-  {% endif %}
+{% if "http" in img %}
+{{ img }}
 {% else %}
-  {{ request.scheme }}://{{ request.get_host }}{% static 'img/placeholder-600x480.jpg' %}
+{{ SITE_URL }}{{ img }}
+{% endif %}
+{% else %}
+{{ SITE_URL }}{% static 'img/placeholder-600x480.jpg' %}
 {% endif %}
 {% endwith %}
 {% endblock %}
+
+{% block tw_title %}{{ product.name }}{% endblock %}
+{% block tw_description %}{{ product.description|default:"Buy anime figures and collectibles in Cambodia"|striptags|truncatewords:30 }}{% endblock %}
+{% block tw_image %}{{ block.super }}{% endblock %}
 
 
 {% block content %}
@@ -148,37 +160,39 @@
                     {% endif %}
 
                     <!-- Description -->
-                    <div class="pd-description">
-                        {% if product.description %}
-                        {{ product.description|linebreaks }}
-                        {% else %}
-                        <p class="text-muted">Discover this amazing collectible. Perfect for collectors and enthusiasts
-                            alike.</p>
-                        {% endif %}
+                    <div class="pd-description-container">
+                        <div class="pd-description" id="descContent">
+                            {% if product.description %}
+                            {{ product.description|linebreaks }}
+                            {% else %}
+                            <p class="text-muted">Discover this amazing collectible. Perfect for collectors and
+                                enthusiasts alike.</p>
+                            {% endif %}
+                        </div>
+                        <button type="button" class="read-more-btn" id="readMoreBtn">
+                            <span>Read More</span> <i class="bi bi-chevron-down"></i>
+                        </button>
                     </div>
 
                     <!-- Add to Cart Form -->
                     <form method="post" action="{% url 'add_to_cart' product.slug %}" class="pd-actions">
                         {% csrf_token %}
-                        <div class="qty-control" role="group" aria-label="Quantity">
-                            <button type="button" class="qty-btn" data-step="-1" aria-label="Decrease quantity">
-                                <i class="bi bi-dash"></i>
-                            </button>
-                            <input id="qty" name="quantity" type="number" value="1"
-                                   min="1"
-                                   max="{% if product.is_preorder %}99{% else %}{{ product.stock|default:99 }}{% endif %}"
-                                   inputmode="numeric" pattern="[0-9]*" aria-label="Quantity">
-                            <button type="button" class="qty-btn" data-step="1" aria-label="Increase quantity">
-                                <i class="bi bi-plus"></i>
-                            </button>
+                        <div class="qty-control">
+                            <button type="button" class="qty-btn" data-step="-1"><i class="bi bi-dash"></i></button>
+                            <input id="qty" name="quantity" type="number" value="1" min="1" max="99">
+                            <button type="button" class="qty-btn" data-step="1"><i class="bi bi-plus"></i></button>
                         </div>
 
-                        <button type="submit" class="pd-btn pd-btn-primary"
-                                {% if not product.is_preorder and not product.stock %}disabled{% endif %}>
+                        <button type="submit"
+                                class="pd-btn pd-btn-primary"
+                                {% if not product.stock %}disabled{% endif %}>
                             <i class="bi bi-cart-plus"></i>
-                            {% if product.is_preorder %}Preorder Now{% else %}Add to Cart{% endif %}
+                            <span>
+            {% if product.is_preorder %}Preorder Now{% else %}Add to Cart{% endif %}
+        </span>
                         </button>
                     </form>
+
 
                     <!-- Browse More -->
                     <a href="{% url 'home' %}?cat={{ product.category.slug }}" class="pd-btn pd-btn-secondary w-100">
@@ -267,8 +281,87 @@
 {% endblock %}
 
 {% block extra_scripts %}
+<!--<script>-->
+<!--    document.addEventListener("DOMContentLoaded", function () {-->
+<!--        const main = document.getElementById("mainImage");-->
+<!--        const thumbs = document.querySelectorAll(".pd-thumb");-->
+
+<!--        thumbs.forEach(thumb => {-->
+<!--            thumb.addEventListener("click", () => {-->
+<!--                thumbs.forEach(t => t.classList.remove("active"));-->
+<!--                thumb.classList.add("active");-->
+<!--                const src = thumb.getAttribute("data-src");-->
+<!--                if (src && main) {-->
+<!--                    main.style.opacity = "0.5";-->
+<!--                    setTimeout(() => {-->
+<!--                        main.src = src;-->
+<!--                        main.style.opacity = "1";-->
+<!--                    }, 150);-->
+<!--                }-->
+<!--            });-->
+<!--        });-->
+
+<!--        const qtyInput = document.getElementById("qty");-->
+<!--        const qtyBtns = document.querySelectorAll(".qty-btn");-->
+
+<!--        qtyBtns.forEach(btn => {-->
+<!--            btn.addEventListener("click", () => {-->
+<!--                const step = parseInt(btn.getAttribute("data-step"));-->
+<!--                const current = parseInt(qtyInput.value) || 1;-->
+<!--                const min = parseInt(qtyInput.getAttribute("min")) || 1;-->
+<!--                const max = parseInt(qtyInput.getAttribute("max")) || 99;-->
+
+<!--                let newValue = current + step;-->
+<!--                if (newValue < min) newValue = min;-->
+<!--                if (newValue > max) newValue = max;-->
+
+<!--                qtyInput.value = newValue;-->
+<!--            });-->
+<!--        });-->
+
+<!--        qtyInput.addEventListener("change", () => {-->
+<!--            const min = parseInt(qtyInput.getAttribute("min")) || 1;-->
+<!--            const max = parseInt(qtyInput.getAttribute("max")) || 99;-->
+<!--            let value = parseInt(qtyInput.value) || min;-->
+
+<!--            if (value < min) value = min;-->
+<!--            if (value > max) value = max;-->
+
+<!--            qtyInput.value = value;-->
+<!--        });-->
+<!--        document.addEventListener("DOMContentLoaded", function () {-->
+<!--            const desc = document.getElementById("descContent");-->
+<!--            const btn = document.getElementById("readMoreBtn");-->
+
+<!--            if (desc && btn) {-->
+<!--                const isOverflowing = () => desc.scrollHeight > desc.clientHeight + 2;-->
+
+<!--                requestAnimationFrame(() => {-->
+<!--                    if (!isOverflowing()) btn.style.display = "none";-->
+<!--                });-->
+
+<!--                btn.addEventListener("click", () => {-->
+<!--                    const expanded = desc.classList.toggle("expanded");-->
+<!--                    const txt = btn.querySelector("span");-->
+<!--                    const icon = btn.querySelector("i");-->
+
+<!--                    if (expanded) {-->
+<!--                        txt.textContent = "Show Less";-->
+<!--                        icon.className = "bi bi-chevron-up";-->
+<!--                    } else {-->
+<!--                        txt.textContent = "Read More";-->
+<!--                        icon.className = "bi bi-chevron-down";-->
+<!--                        desc.scrollIntoView({behavior: "smooth", block: "nearest"});-->
+<!--                    }-->
+<!--                });-->
+<!--            }-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        // thumbnails
         const main = document.getElementById("mainImage");
         const thumbs = document.querySelectorAll(".pd-thumb");
 
@@ -287,6 +380,7 @@
             });
         });
 
+        // qty
         const qtyInput = document.getElementById("qty");
         const qtyBtns = document.querySelectorAll(".qty-btn");
 
@@ -315,6 +409,27 @@
 
             qtyInput.value = value;
         });
+
+        // read more
+        const desc = document.getElementById("descContent");
+        const btn = document.getElementById("readMoreBtn");
+
+        if (desc && btn) {
+            const isOverflowing = () => desc.scrollHeight > desc.clientHeight + 2;
+
+            requestAnimationFrame(() => {
+                if (!isOverflowing()) btn.style.display = "none";
+            });
+
+            btn.addEventListener("click", () => {
+                const expanded = desc.classList.toggle("expanded");
+                btn.querySelector("span").textContent = expanded ? "Show Less" : "Read More";
+                btn.querySelector("i").className = expanded ? "bi bi-chevron-up" : "bi bi-chevron-down";
+
+                if (!expanded) desc.scrollIntoView({behavior: "smooth", block: "nearest"});
+            });
+        }
     });
 </script>
+
 {% endblock %}
