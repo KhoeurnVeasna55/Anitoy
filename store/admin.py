@@ -6,6 +6,7 @@ from .models import Category, Product, Order, OrderItem, ProductImage
 from .services.bakong import check_transaction_by_md5
 from .services.telegram_notify import send_paid_order_telegram
 
+
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("name", "slug")
@@ -83,8 +84,13 @@ class OrderAdmin(admin.ModelAdmin):
 
     inlines = (OrderItemInline,)
 
-    actions = ["mark_verified", "mark_rejected", "force_mark_paid", "resend_paid_telegram"]
-
+    actions = [
+        "mark_verified",
+        "mark_rejected",
+        "mark_completed",
+        "force_mark_paid",
+        "resend_paid_telegram",
+    ]
     def mark_verified(self, request, queryset):
         updated = queryset.update(status="verified")
         self.message_user(request, f"{updated} order(s) marked as Verified.")
@@ -93,8 +99,26 @@ class OrderAdmin(admin.ModelAdmin):
         updated = queryset.update(status="rejected")
         self.message_user(request, f"{updated} order(s) marked as Rejected.")
 
+    def mark_completed(self, request, queryset):
+        """
+        Mark orders as completed (only if payment_status == PAID)
+        """
+        paid_qs = queryset.filter(payment_status="PAID")
+
+        not_paid_count = queryset.exclude(payment_status="PAID").count()
+        if not_paid_count:
+            self.message_user(
+                request,
+                f"Skipped {not_paid_count} order(s) because they are not PAID.",
+                level="warning",
+            )
+
+        updated = paid_qs.update(status="completed")
+        self.message_user(request, f"{updated} order(s) marked as Completed.")
+
     mark_verified.short_description = "Mark selected orders as Verified"
     mark_rejected.short_description = "Mark selected orders as Rejected"
+    mark_completed.short_description = "Mark selected orders as Completed"
 
     @admin.display(description="Total ($)")
     def total_amount_display(self, obj: Order):
@@ -150,4 +174,5 @@ class OrderAdmin(admin.ModelAdmin):
             sent += 1
 
         self.message_user(request, f"Telegram resent for {sent} paid order(s).")
+
 

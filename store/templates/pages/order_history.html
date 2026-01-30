@@ -1,0 +1,266 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}My Orders • Anitoys{% endblock %}
+
+{% block content %}
+<style>
+    .oh-wrap {
+        max-width: 980px;
+        margin: 24px auto;
+        padding: 0 16px;
+    }
+
+    .oh-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .oh-title {
+        font-size: 26px;
+        font-weight: 800;
+        margin: 0;
+    }
+
+    .oh-sub {
+        color: #6b7280;
+        font-size: 14px;
+        margin: 4px 0 0;
+    }
+
+    .oh-list {
+        display: grid;
+        gap: 14px;
+    }
+
+    .oh-card {
+        border: 1px solid #e5e7eb;
+        border-radius: 18px;
+        background: #fff;
+        padding: 14px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, .06);
+    }
+
+    .oh-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .oh-ref {
+        font-weight: 800;
+        font-size: 15px;
+    }
+
+    .oh-meta {
+        color: #6b7280;
+        font-size: 13px;
+        margin-top: 4px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .oh-pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        border: 1px solid #e5e7eb;
+        background: #f9fafb;
+        color: #111827;
+        font-weight: 700;
+    }
+
+    .oh-amt {
+        text-align: right;
+    }
+
+    .oh-price {
+        font-weight: 900;
+        font-size: 16px;
+    }
+
+    .oh-phone {
+        color: #6b7280;
+        font-size: 13px;
+        margin-top: 2px;
+    }
+
+    .oh-items {
+        margin-top: 12px;
+        display: flex;
+        gap: 10px;
+        overflow: auto;
+        padding-bottom: 2px;
+    }
+
+    .oh-item {
+        min-width: 220px;
+        display: flex;
+        gap: 10px;
+        border: 1px solid #eef2f7;
+        background: #fbfdff;
+        border-radius: 14px;
+        padding: 10px;
+    }
+
+    .oh-img {
+        width: 62px;
+        height: 62px;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+        background: #f3f4f6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        flex: 0 0 auto;
+    }
+
+    .oh-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .oh-item-title {
+        font-weight: 800;
+        font-size: 13px;
+        line-height: 1.2;
+    }
+
+    .oh-item-sub {
+        color: #6b7280;
+        font-size: 12px;
+        margin-top: 4px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .oh-divider {
+        height: 1px;
+        background: #eef2f7;
+        margin-top: 12px;
+    }
+
+    .oh-actions {
+        margin-top: 10px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .oh-link {
+        text-decoration: none;
+        font-weight: 800;
+        font-size: 13px;
+        padding: 9px 12px;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+        background: #fff;
+        color: #111827;
+    }
+
+    .oh-link:hover {
+        background: #f9fafb;
+    }
+</style>
+
+<div class="oh-wrap">
+    <div class="oh-head">
+        <div>
+            <h2 class="oh-title">My Order History</h2>
+            <p class="oh-sub">Track your payments and purchased items</p>
+        </div>
+    </div>
+
+    {% if orders %}
+    <div class="oh-list">
+        {% for o in orders %}
+        <div class="oh-card">
+            <div class="oh-top">
+                <div>
+                    <div class="oh-ref">
+                        Order #{{ o.id }}
+                        {% if o.order_reference %} • {{ o.order_reference }}{% endif %}
+                    </div>
+
+                    <div class="oh-meta">
+                        <span class="oh-pill">{{ o.status }}</span>
+                        {% if o.paid_at %}
+                        <span class="oh-pill">Paid {{ o.paid_at|date:"d M Y, h:i A" }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="oh-amt">
+                    {% if o.total_amount %}
+                    <div class="oh-price">${{ o.total_amount }}</div>
+                    {% endif %}
+                    {% if o.phone %}
+                    <div class="oh-phone">{{ o.phone }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- ✅ Product items row -->
+            {% if o.items.all %}
+            <div class="oh-items">
+                {% for it in o.items.all %}
+                <div class="oh-item">
+                    <div class="oh-img">
+                        {% with product=it.product %}
+                        <img
+                                src="{% firstof product.cover_url product.get_primary_image_url '/static/img/placeholder.jpg' %}"
+                                alt="{{ product.name }}"
+                                loading="lazy"
+                                decoding="async"
+                                style="width:100%;height:100%;object-fit:cover;"
+                        >
+                        {% endwith %}
+                    </div>
+
+
+                    <div>
+                        <div class="oh-item-title">{{ it.product.name }}</div>
+                        <div class="oh-item-sub">
+                            <span>Qty: <b>{% firstof it.qty it.quantity it.qty_ordered it.count 1 %}</b></span>
+                            {% if it.price %}
+                            <span>Price: <b>${{ it.price }}</b></span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="oh-divider"></div>
+            <div style="margin-top:10px; color:#6b7280; font-size:13px;">
+                No items found for this order.
+            </div>
+            {% endif %}
+
+            <div class="oh-actions">
+                {% if o.payment_screenshot %}
+                <a class="oh-link" href="{{ o.payment_screenshot.url }}" target="_blank">
+                    <i class="bi bi-image me-1"></i> Payment Screenshot
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div style="padding:16px; border:1px dashed #e5e7eb; border-radius:14px; color:#6b7280;">
+        No orders yet.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -2,7 +2,7 @@
 from django.contrib.auth.decorators import login_required
 from django.urls import path
 from django.contrib.auth import views as auth_views
-
+from store.my_views.history import order_history
 from .form import SignUpForm
 from .my_views import (
     home,
@@ -47,6 +47,7 @@ urlpatterns = [
     path("payment/<int:order_id>/qr.png", khqr_qr_image, name="khqr_qr_image"),
     path("payment/check/<int:order_id>/", check_payment, name="check_payment"),
     path("payment/success/<int:order_id>/", payment_success, name="payment_success"),
+    path("orders/history/", order_history, name="order_history"),
 
     # Auth
     path("login/", login_view, name="login"),
