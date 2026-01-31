@@ -7,7 +7,7 @@ A simple and clean Django e-commerce website for browsing, searching, and purcha
 👨‍🏫 Instructor
 
 - Name: Choeurn Pinchhai
-- Subject: E-Commmerce / Midterm Project
+- Subject: E-Commmerce / Final Project
 
 ---
 
@@ -48,6 +48,7 @@ A simple and clean Django e-commerce website for browsing, searching, and purcha
 - **Pillow** (image handling)
 
 ---
+
 
 
 
