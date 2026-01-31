@@ -31,7 +31,8 @@ A simple and clean Django e-commerce website for browsing, searching, and purcha
 - Select items to checkout  
 - Checkout form (name, email, address, etc.)  
 - Integrated Payments: Bakong KHQR integration for seamless local payments.
-- Instant Alerts: Telegram Bot notifications for new orders and admin alerts.  
+- Instant Alerts: Telegram Bot notifications for new orders and admin alerts.
+- SEO Optimized: Meta tags implementation for better search engine visibility and social media sharing.
 - Search bar  
   
 
@@ -47,6 +48,7 @@ A simple and clean Django e-commerce website for browsing, searching, and purcha
 - **Pillow** (image handling)
 
 ---
+
 
 
 
