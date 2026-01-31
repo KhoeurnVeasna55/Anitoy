@@ -15,10 +15,10 @@ A simple and clean Django e-commerce website for browsing, searching, and purcha
 
 | Member Name        | Role / Contribution |
 |-------------------|----------------------|
-| **Khoeurn Veasna** |  Project_lead(Hosting)  |
-| **Bora Visal**     | Fontend  | 
-| **Ang Putheareak** | UX-UI  |
-| **Lim Vansinh**    | backend |
+| **Khoeurn Veasna** |  Project Lead (Hosting)  |
+| **Bora Visal**     | Frontend Developer  | 
+| **Ang Putheareak** | UX/UI Designer  |
+| **Lim Vansinh**    | Backend Developer |
 
 ---
 
@@ -30,9 +30,10 @@ A simple and clean Django e-commerce website for browsing, searching, and purcha
 - Add to cart / update quantity  
 - Select items to checkout  
 - Checkout form (name, email, address, etc.)  
-- Upload payment slip  
+- Integrated Payments: Bakong KHQR integration for seamless local payments.
+- Instant Alerts: Telegram Bot notifications for new orders and admin alerts.  
 - Search bar  
-- Admin panel for managing products & orders  
+  
 
 ---
 
@@ -46,6 +47,7 @@ A simple and clean Django e-commerce website for browsing, searching, and purcha
 - **Pillow** (image handling)
 
 ---
+
 
 
 
