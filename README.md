@@ -15,10 +15,10 @@ A simple and clean Django e-commerce website for browsing, searching, and purcha
 
 | Member Name        | Role / Contribution |
 |-------------------|----------------------|
-| **Khoeurn Veasna** |  Browse products by category ,Checkout form|
-| **Bora Visal**     | Card_List ,User login & registration | 
-| **Ang Putheareak** | Add to cart / update quantity,Upload payment slip  |
-| **Lim Vansinh**    | Search bar, Select items to checkout|
+| **Khoeurn Veasna** |  Project_lead(Hosting)  |
+| **Bora Visal**     | Fontend  | 
+| **Ang Putheareak** | UX-UI  |
+| **Lim Vansinh**    | backend |
 
 ---
 
@@ -46,6 +46,7 @@ A simple and clean Django e-commerce website for browsing, searching, and purcha
 - **Pillow** (image handling)
 
 ---
+
 
 
 
